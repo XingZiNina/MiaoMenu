@@ -15,7 +15,7 @@ import com.fluxcraft.dGeyserMenuFlux.javamenu.listeners.JavaMenuListener;
 import com.fluxcraft.dGeyserMenuFlux.bedrockmenu.listeners.BedrockMenuListener;
 import com.fluxcraft.dGeyserMenuFlux.utils.MenuClockManager;
 import com.fluxcraft.dGeyserMenuFlux.listeners.ClockInteractionListener;
-
+import com.fluxcraft.dGeyserMenuFlux.utils.ColorUtils; // 新增
 import org.geysermc.floodgate.api.FloodgateApi;
 
 public final class DGeyserMenuFlux extends JavaPlugin {
@@ -32,6 +32,8 @@ public final class DGeyserMenuFlux extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        ColorUtils.init();
 
         if (!initializeFloodgate()) {
             getLogger().severe("Floodgate未找到或初始化失败! 本插件需要Floodgate运行.");
@@ -135,18 +137,13 @@ public final class DGeyserMenuFlux extends JavaPlugin {
         getLogger().info("菜单钟表系统已初始化");
     }
 
-    /**
-     * 简单有效的 bStats 初始化方法
-     */
     private void initializeBStats() {
         try {
-            // 直接使用重定位后的类名
             Class<?> metricsClass = Class.forName("com.fluxcraft.dGeyserMenuFlux.libs.bstats.bukkit.Metrics");
             Object metrics = metricsClass.getConstructor(JavaPlugin.class, int.class)
                     .newInstance(this, 27455);
             getLogger().info("bStats 统计系统已初始化");
         } catch (Exception e) {
-            // 如果失败，简单记录警告，不影响插件运行
             getLogger().warning("bStats 初始化失败，统计功能不可用");
         }
     }

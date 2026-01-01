@@ -23,19 +23,16 @@ public class ConfigManager {
     }
 
     public void loadConfig() {
-        // 创建插件数据文件夹
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdirs();
         }
 
-        // 加载主配置
         plugin.saveDefaultConfig();
         if (config == null) {
             plugin.reloadConfig();
         }
         this.config = plugin.getConfig();
 
-        // 创建菜单目录并检查是否需要示例
         createMenuDirectories();
         loadAllMenuFiles();
     }
@@ -57,23 +54,18 @@ public class ConfigManager {
             bedrockDirCreated = true;
         }
 
-        // 只在目录为空时提供示例
         provideExampleMenus(javaMenuDir, bedrockMenuDir, javaDirCreated, bedrockDirCreated);
     }
 
     private void provideExampleMenus(File javaMenuDir, File bedrockMenuDir, boolean javaDirCreated, boolean bedrockDirCreated) {
-        // 检查Java菜单目录是否为空
         File[] javaFiles = javaMenuDir.listFiles((dir, name) -> name.endsWith(".yml"));
         if (javaFiles == null || javaFiles.length == 0) {
-            // Java菜单目录为空，提供示例
             saveExampleMenu("java_menus/example.yml", new File(javaMenuDir, "example.yml"));
             plugin.getLogger().info("Java菜单目录为空，已创建示例菜单");
         }
 
-        // 检查基岩菜单目录是否为空
         File[] bedrockFiles = bedrockMenuDir.listFiles((dir, name) -> name.endsWith(".yml"));
         if (bedrockFiles == null || bedrockFiles.length == 0) {
-            // 基岩菜单目录为空，提供示例
             saveExampleMenu("bedrock_menus/main.yml", new File(bedrockMenuDir, "main.yml"));
             plugin.getLogger().info("基岩菜单目录为空，已创建示例菜单");
         }
@@ -116,7 +108,6 @@ public class ConfigManager {
             try {
                 FileConfiguration menuConfig = YamlConfiguration.loadConfiguration(file);
                 menuMap.put(menuName, menuConfig);
-                // 减少输出：只在调试模式下输出详细信息
                 if (plugin.getConfig().getBoolean("settings.debug", false)) {
                     plugin.getLogger().info("成功加载" + menuType + "菜单: " + menuName);
                 }
@@ -142,7 +133,6 @@ public class ConfigManager {
         return config.getBoolean("settings.hot-reload.enabled", true);
     }
 
-    // 获取所有可用的菜单名称
     public java.util.Set<String> getJavaMenuNames() {
         return javaMenus.keySet();
     }

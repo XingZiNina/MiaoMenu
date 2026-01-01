@@ -29,7 +29,6 @@ public class MenuConfig {
         this.configFile = new File(plugin.getDataFolder(), folder + "/" + menuName + ".yml");
 
         if (!configFile.exists()) {
-            // 尝试从resources中复制默认配置
             plugin.saveResource(folder + "/" + menuName + ".yml", false);
         }
 
@@ -68,7 +67,6 @@ public class MenuConfig {
         return configFile != null && configFile.exists();
     }
 
-    // 便捷方法获取配置值
     public String getTitle() {
         return config.getString("title", "菜单");
     }

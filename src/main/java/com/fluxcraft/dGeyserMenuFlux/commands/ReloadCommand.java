@@ -41,7 +41,6 @@ public class ReloadCommand {
                     break;
             }
 
-            // 记录到控制台
             String playerName = sender instanceof Player ? sender.getName() : "控制台";
             plugin.getLogger().info("菜单配置已由 " + playerName + " 重载 (" + type + ")");
 

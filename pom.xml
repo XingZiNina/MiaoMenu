@@ -7,7 +7,7 @@
 
     <groupId>com.fluxcraft</groupId>
     <artifactId>d-geyser-menu-flux</artifactId>
-    <version>1.02</version>
+    <version>2.1.0</version>
     <packaging>jar</packaging>
 
     <name>DGeyserMenuFlux</name>

@@ -28,7 +28,6 @@ public class MenuCommand {
         String menuName = args[1];
         Player targetPlayer = player;
 
-        // 检查是否有权限打开其他玩家的菜单
         if (args.length >= 3 && sender.hasPermission("dgeysermenu.admin")) {
             targetPlayer = plugin.getServer().getPlayer(args[2]);
             if (targetPlayer == null) {
@@ -37,14 +36,12 @@ public class MenuCommand {
             }
         }
 
-        // 检查权限
         if (!hasMenuPermission(player, menuName)) {
             player.sendMessage("§c你没有权限打开这个菜单!");
             return true;
         }
 
         try {
-            // 根据玩家类型打开对应菜单
             if (isBedrockPlayer(targetPlayer)) {
                 plugin.getBedrockMenuManager().openMenu(targetPlayer, menuName);
             } else {
@@ -73,7 +70,6 @@ public class MenuCommand {
     }
 
     private boolean hasMenuPermission(Player player, String menuName) {
-        // 默认权限
         String permission = "dgeysermenu.menu." + menuName;
 
         if (player.hasPermission("dgeysermenu.admin") || player.hasPermission("dgeysermenu.*")) {

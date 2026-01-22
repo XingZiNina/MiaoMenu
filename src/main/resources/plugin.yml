@@ -5,6 +5,8 @@ api-version: 1.21
 description: 轻量级Java版和基岩版菜单插件
 author: MingLi
 
+folia-supported: true
+
 softdepend: [Floodgate, PlaceholderAPI]
 
 commands:

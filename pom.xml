@@ -46,6 +46,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>cn.handyplus.lib.adapter</groupId>
+            <artifactId>FoliaLib</artifactId>
+            <version>1.2.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>3.1.0</version>
@@ -99,6 +105,10 @@
                                 <relocation>
                                     <pattern>org.bstats</pattern>
                                     <shadedPattern>com.fluxcraft.miaomenu.libs.bstats</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.tcoded.folialib</pattern>
+                                    <shadedPattern>com.fluxcraft.miaomenu.lib.folialib</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

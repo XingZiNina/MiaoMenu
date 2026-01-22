@@ -1,6 +1,7 @@
 package com.fluxcraft.miaomenu.bedrockmenu;
 
 import com.fluxcraft.miaomenu.miaomenu;
+import com.fluxcraft.miaomenu.utils.Lang;
 import com.fluxcraft.miaomenu.utils.PlaceholderUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.geysermc.cumulus.form.SimpleForm;
@@ -10,6 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BedrockMenu {
+
+    private static class ConfigKeys {
+        public static final String MENU_ITEMS = "menu.items";
+        public static final String MENU_TITLE = "menu.title";
+        public static final String DEFAULT_TITLE = "菜单";
+        public static final String TEXT = "text";
+        public static final String ICON = "icon";
+        public static final String ICON_TYPE = "icon_type";
+        public static final String COMMAND = "command";
+        public static final String SUBMENU = "submenu";
+        public static final String DEFAULT_TEXT = Lang.get("default-item-name");
+        public static final String DEFAULT_ICON_TYPE = "path";
+        public static final String ICON_TYPE_URL = "url";
+    }
+
     private final String name;
     private final FileConfiguration config;
     private final List<BedrockMenuItem> menuItems = new ArrayList<>();
@@ -24,32 +40,34 @@ public class BedrockMenu {
 
     private void loadMenuItems() {
         menuItems.clear();
-        if (config.contains("menu.items")) {
-            List<?> items = config.getList("menu.items");
-            if (items != null) {
-                for (Object itemObj : items) {
-                    if (itemObj instanceof org.bukkit.configuration.ConfigurationSection) {
-                        org.bukkit.configuration.ConfigurationSection section = (org.bukkit.configuration.ConfigurationSection) itemObj;
-                        menuItems.add(new BedrockMenuItem(
-                                section.getString("text", "未命名"),
-                                section.getString("icon", ""),
-                                section.getString("icon_type", "path"),
-                                section.getString("command", ""),
-                                section.getString("submenu", "")
-                        ));
-                    }
-                }
+        if (!config.contains(ConfigKeys.MENU_ITEMS)) {
+            return;
+        }
+
+        List<?> items = config.getList(ConfigKeys.MENU_ITEMS);
+        if (items == null) {
+            return;
+        }
+
+        for (Object itemObj : items) {
+            if (itemObj instanceof org.bukkit.configuration.ConfigurationSection) {
+                org.bukkit.configuration.ConfigurationSection section = (org.bukkit.configuration.ConfigurationSection) itemObj;
+                menuItems.add(new BedrockMenuItem(
+                        section.getString(ConfigKeys.TEXT, ConfigKeys.DEFAULT_TEXT),
+                        section.getString(ConfigKeys.ICON, ""),
+                        section.getString(ConfigKeys.ICON_TYPE, ConfigKeys.DEFAULT_ICON_TYPE),
+                        section.getString(ConfigKeys.COMMAND, ""),
+                        section.getString(ConfigKeys.SUBMENU, "")
+                ));
             }
         }
     }
 
     public SimpleForm.Builder buildForm(org.bukkit.entity.Player player) {
         String title = PlaceholderUtils.parse(player, getMenuTitle(), plugin);
-        String content = "";
-
         SimpleForm.Builder form = SimpleForm.builder()
                 .title(title)
-                .content(content);
+                .content("");
 
         for (BedrockMenuItem item : menuItems) {
             String buttonText = PlaceholderUtils.parse(player, item.getText(), plugin);
@@ -63,16 +81,23 @@ public class BedrockMenu {
     }
 
     private String getMenuTitle() {
-        return config.getString("menu.title", "菜单");
+        return config.getString(ConfigKeys.MENU_TITLE, ConfigKeys.DEFAULT_TITLE);
     }
 
     private FormImage.Type getImageType(String type) {
-        if ("url".equalsIgnoreCase(type)) return FormImage.Type.URL;
+        if (ConfigKeys.ICON_TYPE_URL.equalsIgnoreCase(type)) {
+            return FormImage.Type.URL;
+        }
         return FormImage.Type.PATH;
     }
 
-    public String getName() { return name; }
-    public List<BedrockMenuItem> getMenuItems() { return menuItems; }
+    public String getName() {
+        return name;
+    }
+
+    public List<BedrockMenuItem> getMenuItems() {
+        return new ArrayList<>(menuItems); // 防御性拷贝，防止外部修改
+    }
 
     public static class BedrockMenuItem {
         private final String text;
@@ -82,9 +107,9 @@ public class BedrockMenu {
         private final String submenu;
 
         public BedrockMenuItem(String text, String icon, String iconType, String command, String submenu) {
-            this.text = text != null ? text : "未命名";
+            this.text = text != null ? text : ConfigKeys.DEFAULT_TEXT;
             this.icon = icon != null ? icon : "";
-            this.iconType = iconType != null ? iconType : "path";
+            this.iconType = iconType != null ? iconType : ConfigKeys.DEFAULT_ICON_TYPE;
             this.command = command != null ? command : "";
             this.submenu = submenu != null ? submenu : "";
         }

@@ -18,7 +18,6 @@ public final class PlaceholderUtils {
 
         if (player != null) {
             text = text.replace("%player_name%", player.getName());
-            text = text.replace("%caonima%", player.getName());
             text = text.replace("%player%", player.getName());
         }
 

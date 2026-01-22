@@ -7,6 +7,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class ActionRegistry {
     private final Map<String, MenuAction> actions = new HashMap<>();
@@ -34,18 +35,22 @@ public class ActionRegistry {
     }
 
     public void dispatch(Player player, String rawCommand) {
-        if (rawCommand == null || rawCommand.isEmpty()) return;
+        if (rawCommand == null || rawCommand.trim().isEmpty()) {
+            return;
+        }
 
         String prefix = null;
         String content = rawCommand;
 
-        if (rawCommand.startsWith("[") && rawCommand.contains("]")) {
-            int endIndex = rawCommand.indexOf("]");
-            prefix = rawCommand.substring(1, endIndex).toLowerCase();
-            content = rawCommand.substring(endIndex + 1).trim();
+        int bracketStart = rawCommand.indexOf("[");
+        int bracketEnd = rawCommand.indexOf("]");
+
+        if (bracketStart == 0 && bracketEnd > 0) {
+            prefix = rawCommand.substring(1, bracketEnd).toLowerCase();
+            content = rawCommand.substring(bracketEnd + 1).trim();
         }
 
-        MenuAction action = prefix != null ? actions.get(prefix) : defaultAction;
+        MenuAction action = (prefix != null) ? actions.get(prefix) : defaultAction;
         if (action == null) {
             action = defaultAction;
         }
@@ -53,8 +58,9 @@ public class ActionRegistry {
         try {
             action.execute(player, content, plugin);
         } catch (Exception e) {
-            plugin.getLogger().severe("Failed to execute menu action: " + rawCommand);
-            e.printStackTrace();
+            String errorMsg = String.format("Failed to execute action '%s' for player '%s': %s",
+                    rawCommand, player.getName(), e.getMessage());
+            plugin.getLogger().log(Level.SEVERE, errorMsg, e);
         }
     }
 }

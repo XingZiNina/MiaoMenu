@@ -23,15 +23,16 @@ public class PlayerLifecycleListener implements Listener {
         Player player = event.getPlayer();
         if (plugin.getConfig().getBoolean("settings.menu-clock.give-on-join", true)) {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                clockManager.giveClockToPlayer(player);
-            }, 20L);
+                if (player.isOnline()) {
+                    clockManager.giveClockToPlayer(player);
+                }
+            }, miaomenu.JOIN_DELAY_TICKS);
         }
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        if (clockManager.removeClockFromDrops(event.getEntity(), event.getDrops())) {
-        }
+        clockManager.removeClockFromDrops(event.getEntity(), event.getDrops());
     }
 
     @EventHandler

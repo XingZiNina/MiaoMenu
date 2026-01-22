@@ -15,10 +15,15 @@ import com.fluxcraft.miaomenu.utils.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.util.List;
 
 public final class miaomenu extends JavaPlugin {
 
     private static final int CONFIG_VERSION = 1;
+    private static final int BSTATS_ID = 28979;
+    public static final int JOIN_DELAY_TICKS = 20;
+    private static final String BSTATS_METRICS_CLASS = "com.fluxcraft.miaomenu.libs.bstats.bukkit.Metrics";
+    private static final String BSTATS_SIMPLE_PIE_CLASS = "com.fluxcraft.miaomenu.libs.bstats.charts.SimplePie";
 
     private ConfigManager configManager;
     private JavaMenuManager javaMenuManager;
@@ -72,15 +77,16 @@ public final class miaomenu extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        hotReloadManager.shutdown();
+        if (hotReloadManager != null) {
+            hotReloadManager.shutdown();
+        }
     }
 
     private void checkAndRefreshConfig() {
         int currentVersion = getConfig().getInt("config-version", 0);
 
         if (currentVersion < CONFIG_VERSION) {
-            String warningMsg = Lang.get("message.config-update-warning");
-            getLogger().warning(warningMsg);
+            getLogger().warning(Lang.get("message.config-update-warning"));
 
             saveResource("config.yml", true);
 
@@ -93,36 +99,41 @@ public final class miaomenu extends JavaPlugin {
 
     private void initializeBStats() {
         try {
-            Class<?> metricsClass = Class.forName("com.fluxcraft.miaomenu.libs.bstats.bukkit.Metrics");
-            Object metrics = metricsClass.getConstructor(JavaPlugin.class, int.class).newInstance(this,28979);
+            Class<?> metricsClass = Class.forName(BSTATS_METRICS_CLASS);
+            Object metrics = metricsClass.getConstructor(JavaPlugin.class, int.class).newInstance(this, BSTATS_ID);
 
-            metricsClass.getMethod("addCustomChart", Class.forName("com.fluxcraft.miaomenu.libs.bstats.charts.SimplePie"))
-                    .invoke(metrics, Class.forName("com.fluxcraft.miaomenu.libs.bstats.charts.SimplePie")
-                            .getConstructor(String.class, java.util.concurrent.Callable.class)
-                            .newInstance("server_software", (java.util.concurrent.Callable<String>) () -> {
-                                String version = Bukkit.getVersion();
-                                String name = "Unknown";
-                                if (version.contains("Paper")) name = "Paper";
-                                else if (version.contains("Spigot")) name = "Spigot";
-                                else if (version.contains("Purpur")) name = "Purpur";
-                                else if (version.contains("Leaves")) name = "Leaves";
-                                else if (version.contains("Lumina")) name = "Lumina";
-                                else if (version.contains(" ")) name = "Other";
-                                return name;
-                            }));
+            addCustomChart(metrics, metricsClass, "server_software", this::detectServerSoftware);
+            addCustomChart(metrics, metricsClass, "minecraft_version", this::detectMinecraftVersion);
 
-            metricsClass.getMethod("addCustomChart", Class.forName("com.fluxcraft.miaomenu.libs.bstats.charts.SimplePie"))
-                    .invoke(metrics, Class.forName("com.fluxcraft.miaomenu.libs.bstats.charts.SimplePie")
-                            .getConstructor(String.class, java.util.concurrent.Callable.class)
-                            .newInstance("minecraft_version", (java.util.concurrent.Callable<String>) () -> {
-                                String v = Bukkit.getBukkitVersion().split("-")[0];
-                                return v.substring(0, Math.min(4, v.length()));
-                            }));
         } catch (Exception e) {
             if (getConfig().getBoolean("settings.debug")) {
-                getLogger().warning("BStats init error: " + e.getMessage());
+                getLogger().warning("BStats initialization failed: " + e.getMessage());
             }
         }
+    }
+
+    private void addCustomChart(Object metrics, Class<?> metricsClass, String chartId, java.util.concurrent.Callable<String> callable) throws Exception {
+        Class<?> simplePieClass = Class.forName(BSTATS_SIMPLE_PIE_CLASS);
+        Object simplePie = simplePieClass.getConstructor(String.class, java.util.concurrent.Callable.class).newInstance(chartId, callable);
+        metricsClass.getMethod("addCustomChart", simplePieClass).invoke(metrics, simplePie);
+    }
+
+    private String detectServerSoftware() {
+        String version = Bukkit.getVersion();
+        List<String> knownTypes = List.of("Paper", "Spigot", "Purpur", "Leaves", "Lumina");
+
+        for (String type : knownTypes) {
+            if (version.contains(type)) {
+                return type;
+            }
+        }
+        return "Other";
+    }
+
+    private String detectMinecraftVersion() {
+        String version = Bukkit.getBukkitVersion().split("-")[0];
+        int maxLength = Math.min(4, version.length());
+        return version.substring(0, maxLength);
     }
 
     public ConfigManager getConfigManager() { return configManager; }

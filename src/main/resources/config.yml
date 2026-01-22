@@ -1,23 +1,55 @@
-# DGeyserMenuFlux 主配置
+#请勿随意更改版本号！！！！
+config-version: 1
+
 settings:
-  # 调试模式
+#非反馈issue请勿启用
   debug: false
 
-  # 热重载设置
-  hot-reload:
-    enabled: true
-    check-interval: 2000  # 毫秒
-
-  # 菜单设置
+  # 当未指定具体菜单名称时（如玩家右键点击时钟），默认打开的菜单文件名。
   default-menu: "main"
 
-  # 钟表设置
-  menu-clock:
+  # 启用后，插件会实时监控 java_menus 和 bedrock_menus 目录下的文件变化。
+  # 当文件被保存时，无需重启服务器，配置会自动重新加载。
+  hot-reload:
     enabled: true
+
+  # 为玩家提供一个特殊的物品（钟表），右键即可打开菜单。
+  menu-clock:
+    # 是否启用整个钟表功能（包括事件监听和自动发放）
+    enabled: true
+    # 玩家加入服务器时是否自动给予钟表
+    # 会检测背包中是否已有钟表，避免重复发放。
     give-on-join: true
 
-  # 消息配置
-  messages:
-    no-permission: "&c你没有权限使用此菜单!"
-    menu-not-found: "&c菜单未找到!"
+# 支持颜色代码：使用 & 符号（例如 &a 代表绿色，&c 代表红色）。
+messages:
+  message:
+    no-permission: "&c你没有权限执行此命令!"
+    players-only: "&c只有玩家才能执行此命令!"
+    menu-not-found: "&c菜单不存在: "
+    open-error: "&c打开菜单时发生错误，请检查控制台。"
+    invalid-player: "&c玩家不存在或不在线!"
+    config-update-warning: "&e检测到配置文件版本过低，正在自动更新..."
+    config-updated: "&a配置文件已更新至最新版。"
     reloaded: "&a配置重载完成!"
+
+    help:
+      header: "&6=== 欢迎喵！ ==="
+      usage: "&7使用 &f/dgm <子命令> &7来执行"
+
+  command:
+    unknown: "&c未知的子命令，使用 /dgm help 查看帮助。"
+    usage-open: "&c用法: /dgm open <菜单名称>"
+
+  menu:
+    clock:
+      # 钟表物品名称
+      name: "&6菜单钟表 &7(右键打开)"
+      # 进服自动发放时的提示消息
+      given: "&a已收到菜单钟表，右键即可打开菜单!"
+      restored: "&f你的物品已恢复。"
+
+  hot-reload:
+    # 监控启动时的控制台日志
+    initialized: "菜单检测自重载已启动."
+    detected: "检测到文件变更: {0}，正在重载菜单..."

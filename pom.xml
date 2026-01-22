@@ -6,8 +6,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.fluxcraft</groupId>
-    <artifactId>d-geyser-menu-flux</artifactId>
-    <version>2.1.0</version>
+    <artifactId>Miaomenu</artifactId>
+    <version>2.0A</version>
     <packaging>jar</packaging>
 
     <name>DGeyserMenuFlux</name>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.0</version>
+            <version>3.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -66,6 +66,13 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -91,7 +98,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>com.fluxcraft.dGeyserMenuFlux.libs.bstats</shadedPattern>
+                                    <shadedPattern>com.fluxcraft.miaomenu.libs.bstats</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

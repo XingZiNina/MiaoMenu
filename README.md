@@ -1,49 +1,44 @@
-# MiaoMenu
+[MD]
+# 喵喵菜单 ----喵喵喵喵最适合你的菜单
+### 本项目为开源项目 欢迎大佬提交Pr
+[/MD]
+![这是图片](/pic/1.png)
+[MD]
+**“一份配置，两端适配”** —— 这就是 MiaoMenu 的核心理念。插件会自动检测玩家是用 Java 版还是基岩版登录，然后渲染完全对应的界面：
+- Java 玩家 -> 经典背包 GUI
+- 基岩玩家 -> 原生表单 UI
+[/MD]
+![这是图片](/pic/2.png)
+[MD]
+## 好用的功能
 
-<div align="center">
+### 1. 自动侦测热重载
+改完配置文件，**无需输入重载指令(其实也有reload指令)**，菜单立即生效。
+依靠 WatchService 的文件监控，延迟仅 0.5 秒！！
+### 2. 菜单时钟（持久化物品）
+生成带 NBT 标识的钟表，玩家死亡、下线也不会丢。
+### 3. 全面的插件集成
+-  PlaceholderAPI：动态占位符随心替换
+-  Floodgate/Geyser：自动识别 Bedrock 玩家
+-  BStats：已集成，匿名统计使用数据
+[/MD]
+[MD]# 结构清晰 新手小白也好上手自己维护[/MD]
+![这是图片](/pic/3.png)
+[MD]# 想要啥功能 自己都能写！该有的功能为你写好 基础功能一个不少捏[/MD]
+![这是图片](/pic/4.png)
+[MD]
 
-**高效 · 跨平台 · 现代化**
-
-一个支持 Java 和 Bedrock (基岩版) 的现代化菜单插件，专为 Spigot/Paper 服务器设计。
-
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![BStats](https://bstats.org/api/bukkit/28979/shields.svg)](https://bstats.org/plugin/bukkit/MingLiPro/28979)
-
-</div>
-
-## ✨ 特性
-
-- 🌍 **跨平台支持**: 完美适配 Java版和通过 Floodgate/Geyser 连接的基岩版玩家。
-  - Java版: 支持 1.20.5+ 的新版 GUI 组件，体验丝滑。
-  - 基岩版: 原生 Form 表单支持。
-- ⚡ **热重载**: 监听配置文件变更，无需重启服务器即可刷新菜单。
-- 🔧 **语言系统**: 完全基于 `config.yml` 的语言配置，支持自定义颜色代码和占位符。
-- 🕹️ **菜单钟表**: 玩家专属物品，点击即可打开默认菜单。支持死亡保留与找回。
-- 🛡️ **智能配置更新**: 内置版本检测机制，当配置文件结构更新时自动保留兼容性或提示覆盖。
-- 📊 **详细统计**: 集成 BStats，后台默默统计服务器核心、版本及玩家分布，助我们优化插件。
-
-## 📖 用法
-
-安装后，插件会自动生成 `config.yml` 和菜单文件夹。
-
-### 命令
-
-| 命令 | 描述 | 权限 |
-| :--- | :--- | :--- |
-| `/dgm open <菜单名>` | 为自己打开指定菜单 | `dgm.use` |
-| `/dgm reload` | 重载配置和所有菜单文件 | `dgm.reload` |
-| `/dgm help` | 查看帮助信息 | 无 |
-
-## 🤝 贡献
-
-欢迎提交 Issue 或 Pull Request 来帮助完善 MiaoMenu。
-
-## 📄 版权协议
-
-本项目采用 MIT 协议开源。
-
----
-
-<div align="center">
-Made with ❤️ by MingLi
-</div>
+## 超低门槛上手
+```bash
+/dgm open <菜单名> //打开菜单
+/dgm reload //热重载配置(一般用不到)
+/dgm help //获取帮助
+```
+#### 有Tab补全不用担心喵
+[/MD]
+[MD]### 这么高度自定义DIY的配置文件 居然是免费的！真是肥美啊喵[/MD]
+![这是图片](/pic/5.png)
+[MD]
+#### 本菜单在格式上借鉴了杜蕾斯菜单(其实是当初用杜蕾斯不舒服 又不想改太多格式 所以就用的杜蕾斯的格式)
+### 本菜单不跟市面上主流菜单(Trmenu Delxumenu)比较 这款喵喵菜单只是十分符合我个人的使用习惯喵！
+[/MD]

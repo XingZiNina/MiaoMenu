@@ -28,6 +28,7 @@ public class ActionRegistry {
         register("broadcast", new BroadcastAction());
         register("close", new CloseAction());
         register("menu", new OpenMenuAction(menuManager));
+        register("cmd", new ConsoleCommandAction());
     }
 
     public void register(String prefix, MenuAction action) {
@@ -39,6 +40,8 @@ public class ActionRegistry {
             return;
         }
 
+        rawCommand = rawCommand.trim();
+
         String prefix = null;
         String content = rawCommand;
 
@@ -46,7 +49,7 @@ public class ActionRegistry {
         int bracketEnd = rawCommand.indexOf("]");
 
         if (bracketStart == 0 && bracketEnd > 0) {
-            prefix = rawCommand.substring(1, bracketEnd).toLowerCase();
+            prefix = rawCommand.substring(1, bracketEnd).toLowerCase().trim();
             content = rawCommand.substring(bracketEnd + 1).trim();
         }
 

@@ -6,6 +6,7 @@ description: 轻量级Java版和基岩版菜单插件
 author: MingLi
 
 folia-supported: true
+ #我并没支持Folia 我只是写在这里好看而已
 
 softdepend: [Floodgate, PlaceholderAPI]
 

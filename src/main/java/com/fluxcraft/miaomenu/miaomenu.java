@@ -120,7 +120,7 @@ public final class miaomenu extends JavaPlugin {
 
     private String detectServerSoftware() {
         String version = Bukkit.getVersion();
-        List<String> knownTypes = List.of("Paper", "Spigot", "Purpur", "Leaves", "Lumina");
+        List<String> knownTypes = List.of("Paper", "Spigot", "Purpur", "Mint","Leaves", "Leaf","Luminol","Folia");
 
         for (String type : knownTypes) {
             if (version.contains(type)) {

@@ -1,10 +1,7 @@
 #请勿随意更改版本号！！！！
-config-version: 1
+config-version: 3
 
 settings:
-#非反馈issue请勿启用
-  debug: false
-
   # 当未指定具体菜单名称时（如玩家右键点击时钟），默认打开的菜单文件名。
   default-menu: "main"
 

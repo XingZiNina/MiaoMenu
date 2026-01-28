@@ -7,11 +7,11 @@
 
     <groupId>com.fluxcraft</groupId>
     <artifactId>Miaomenu</artifactId>
-    <version>2.0A</version>
+    <version>2.0C</version>
     <packaging>jar</packaging>
 
-    <name>DGeyserMenuFlux</name>
-    <description>一款划时代的菜单插件</description>
+    <name>MiaoMenu</name>
+    <description>喵喵最适合你的菜单插件</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

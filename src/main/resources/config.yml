@@ -1,14 +1,19 @@
 #请勿随意更改版本号！！！！
-config-version: 3
+config-version: 4
 
 settings:
   # 当未指定具体菜单名称时（如玩家右键点击时钟），默认打开的菜单文件名。
-  default-menu: "main"
+  default-menu: "test"
 
   # 启用后，插件会实时监控 java_menus 和 bedrock_menus 目录下的文件变化。
   # 当文件被保存时，无需重启服务器，配置会自动重新加载。
   hot-reload:
     enabled: true
+
+  # 自动生成示例文件开关
+  # true  = 插件启动时检测并自动生成 test.yml（仅当文件不存在时生成，只会生成一次）
+  # false = 完全跳过示例文件生成逻辑，不检查也不生成
+  auto-generate-examples: true
 
   # 为玩家提供一个特殊的物品（钟表），右键即可打开菜单。
   menu-clock:

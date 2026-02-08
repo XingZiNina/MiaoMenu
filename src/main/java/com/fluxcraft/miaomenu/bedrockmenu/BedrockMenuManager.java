@@ -3,6 +3,8 @@ package com.fluxcraft.miaomenu.bedrockmenu;
 import com.fluxcraft.miaomenu.miaomenu;
 import com.fluxcraft.miaomenu.utils.Lang;
 import com.fluxcraft.miaomenu.utils.PlaceholderUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -59,17 +61,38 @@ public class BedrockMenuManager {
             }
         }));
     }
-
     private void handleItemClick(Player player, BedrockMenu.BedrockMenuItem item) {
-        String cmd = item.getCommand();
-        if (cmd != null && !cmd.isEmpty()) {
-            String parsed = PlaceholderUtils.parse(player, cmd, plugin);
+        String rawCmd = item.getCommand();
+        if (rawCmd == null || rawCmd.isEmpty()) {
+            return;
+        }
+        String parsed = PlaceholderUtils.parse(player, rawCmd, plugin);
+        parsed = parsed.replace("%player%", player.getName());
+        String lowerCmd = parsed.toLowerCase();
 
-            if (parsed.startsWith("[player]")) {
-                player.performCommand(parsed.substring(8).trim());
-            } else {
-                player.performCommand(parsed);
-            }
+        if (lowerCmd.startsWith("[player]")) {
+            String command = parsed.substring(8).trim();
+            player.performCommand(command);
+
+        } else if (lowerCmd.startsWith("[console]")) {
+            String command = parsed.substring(9).trim();
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            });
+
+        } else if (lowerCmd.startsWith("[message]")) {
+            String message = parsed.substring(9).trim();
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+
+        } else if (lowerCmd.startsWith("[menu]")) {
+            String menuName = parsed.substring(6).trim();
+            openMenu(player, menuName);
+
+        } else if (lowerCmd.startsWith("[close]")) {
+            return;
+
+        } else {
+            player.performCommand(parsed);
         }
     }
 

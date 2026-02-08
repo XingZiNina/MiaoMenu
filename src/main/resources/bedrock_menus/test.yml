@@ -1,0 +1,55 @@
+# 基岩版菜单示例 - 主菜单
+menu:
+  title: "§6§l主菜单" #标题
+  subtitle: "§7欢迎来到服务器!" #头顶(其实是不知道怎么解释)
+  footer: "§8服务器版本 1.21.x" #脚底(其实是不知道怎么解释)
+
+  items: #物品类开始
+    - text: "§e§l服务器信息\n§7点击查看服务器状态" #显示的名称
+      icon: "textures/items/book_enchanted" #图标路径（可以使用资源包创造专属的图标）
+      icon_type: "path" #默认不要动，该项是因为原来有URL获取图像功能，但因为些许原因去掉了
+      command: "" #要执行的命令 注:可使用%player%代替玩家名
+      execute_as: "player" #可选项console（控制台执行）、message(发送消息)、menu(打开子菜单)、close（关闭菜单）
+      #后续都为同样的 请详细耐心为你的玩家打造一个特别的菜单吧！
+
+    - text: "§a§l传送功能\n§7快速传送至各个地点"
+      icon: "textures/items/compass_item"
+      icon_type: "path"
+      command: "dgeysermenu open warps"
+      execute_as: "player"
+    
+    - text: "§b§l个人信息\n§7查看您的游戏数据"
+      icon: "textures/items/empty_armor_slot_helmet"
+      icon_type: "path"
+      command: "dgeysermenu open profile"
+      execute_as: "player"
+
+    - text: "§2§l商店系统\n§7购买和出售物品"
+      icon: "textures/items/emerald"
+      icon_type: "path"
+      command: "dgeysermenu open shop"
+      execute_as: "player"
+
+    - text: "§d§l任务系统\n§7查看可接取的任务"
+      icon: "textures/items/book_normal"
+      icon_type: "path"
+      command: "quests"
+      execute_as: "player"
+
+    - text: "§c§l小游戏\n§7参与有趣的小游戏"
+      icon: "textures/items/diamond_sword"
+      icon_type: "path"
+      command: "games"
+      execute_as: "player"
+
+    - text: "§5§l好友系统\n§7管理您的好友列表"
+      icon: "textures/items/name_tag"
+      icon_type: "path"
+      command: "friends"
+      execute_as: "player"
+
+    - text: "§9§l帮助信息\n§7查看服务器帮助"
+      icon: "textures/items/paper"
+      icon_type: "path"
+      command: "help"
+      execute_as: "player"

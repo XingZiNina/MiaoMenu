@@ -16,10 +16,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
+import com.fluxcraft.miaomenu.listeners.TestXiaFa;
 
 public final class miaomenu extends JavaPlugin {
 
-    private static final int CONFIG_VERSION = 1;
+    private static final int CONFIG_VERSION = 4;
     private static final int BSTATS_ID = 28979;
     public static final int JOIN_DELAY_TICKS = 20;
     private static final String BSTATS_METRICS_CLASS = "com.fluxcraft.miaomenu.libs.bstats.bukkit.Metrics";
@@ -47,6 +48,7 @@ public final class miaomenu extends JavaPlugin {
         this.configManager = new ConfigManager(this);
         this.javaMenuManager = new JavaMenuManager(this);
         this.bedrockMenuManager = new BedrockMenuManager(this);
+        new TestXiaFa(this).distribute();
 
         this.actionRegistry = new ActionRegistry(this, javaMenuManager);
         this.commandManager = new CommandManager(this);

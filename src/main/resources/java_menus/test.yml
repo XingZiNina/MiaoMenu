@@ -1,0 +1,75 @@
+# 菜单标题 (箱子打开时顶部的名字)
+menu_title: "&6&l主菜单 &7| &f服务器名称"
+
+# 菜单行数 (必须填 1, 2, 3, 4, 5 或 6)
+# 1行 = 9个格子, 6行 = 54个格子 (满)
+rows: 6
+
+items:
+  # 这里的 "server_info" 是这个物品的ID，你可以随意修改，不要重复即可
+  server_info:
+    slot: 10 #图标显示的格数
+    material: KNOWLEDGE_BOOK # 说明: 物品的材质ID (必须是Minecraft原版存在的ID) 我推荐使用MCwiki查询
+    display_name: "&e&l服务器信息"     # 说明: 物品显示的名字 (支持颜色代码 &)
+    lore: # 说明: 物品的描述文字 (也就是鼠标放上去看到的几行字)
+      - "&7点击查看服务器信息"
+      - ""
+      - "&f在线玩家: &a%server_online%&f/&a%server_max_players%"  # 常用变量 (需要安装PlaceholderAPI插件):
+      - "&f服务器版本: &a%server_version%"
+      - ""
+      - "&e点击查看详细信息"
+    left_click_commands: # 说明: 鼠标左键点击时执行的一系列动作 (按顺序执行)
+      - "[message] &6=== 服务器信息 ===" # [message] = 发送一条聊天消息给点击的玩家
+      - "[player] list" # [player] = 让玩家自己执行后面的命令 (相当于玩家在聊天框输入)
+      - "[close]" # [close] = 点击后关闭菜单
+      # 可选项console（控制台执行）、message(发送消息)、menu(打开子菜单)、close（关闭菜单）
+      #下面的均这么设置即可
+
+  # 示例物品 2: 传送
+  teleport_spawn:
+    slot: 12
+    material: COMPASS
+    display_name: "&a&l传送回城"
+    lore:
+      - "&7点击传送至主城"
+      - ""
+      - "&f立即传送至安全的主城"
+      - "&f区域，适合新手玩家"
+    left_click_commands:
+      - "[player] spawn"
+      - "[message] &a已传送至主城!"
+
+  # 示例物品 3: 个人信息
+  player_info:
+    slot: 14
+    material: PLAYER_HEAD
+    display_name: "&b&l个人信息"
+    lore:
+      - "&7查看您的个人信息"
+      - "&f金钱: &6%vault_eco_balance%"
+    left_click_commands:
+      - "[message] &6=== 个人信息 ==="
+      - "[message] &f你的等级很高哦！"
+
+  # 示例物品 4: 商店
+  shop:
+    slot: 16
+    material: EMERALD
+    display_name: "&2&l商店系统"
+    lore:
+      - "&7打开服务器商店"
+    left_click_commands:
+      - "[menu] shop"
+      # [menu] = 直接打开本插件的另一个菜单文件 (shop.yml)
+      # 相当于 dgm open shop
+
+  # 示例物品 6: 关闭按钮
+  close:
+    slot: 49
+    # 第6行最中间的位置 (45+4=49)
+    material: BARRIER
+    display_name: "&c&l关闭菜单"
+    lore:
+      - "&7点击关闭此菜单"
+    left_click_commands:
+      - "[close]"

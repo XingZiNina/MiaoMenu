@@ -9,7 +9,7 @@
     <version>2.5</version>
     <packaging>jar</packaging>
     <name>MiaoMenu</name>
-    <description>喵喵最适合你的菜单插件</description>
+    <description>Meow meow menu plugin that suits you best</description>
     <properties>
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

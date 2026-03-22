@@ -1,69 +1,69 @@
-# 请勿随意更改版本号！！！！
-config-version: 12 #config.yml的版本号检测
-menu-version: 3 #test.yml的版本号检测
+# DO NOT CHANGE VERSION NUMBER!!!!!
+config-version: 12 # config.yml version detection
+menu-version: 3 # test.yml version detection
 settings:
-  open-menu-sound: #打开菜单的音效配置
+  open-menu-sound: # Sound configuration for opening menu
     enabled: true
-    sound: "entity.experience_orb.pickup" #MC原版的音效
-    volume: 1.0 #音量 范围 0.0-1.0
-    pitch: 1.0 #音调   范围 0.5-2.0
-  default-menu: "test" #默认打开的菜单（与文件名同步无需后缀）
+    sound: "entity.experience_orb.pickup" # MC vanilla sound effect
+    volume: 1.0 # Volume range 0.0-1.0
+    pitch: 1.0 # Pitch range 0.5-2.0
+  default-menu: "test" # Default menu to open (sync with filename, no extension needed)
 
   hot-reload:
-    enabled: true # 当文件被保存时，无需输入reload，配置会自动重新加载。
-  auto-generate-examples: true # 自动生成示例文件开关 仅在没有的时候生成
+    enabled: true # When file is saved, no need to enter reload, config automatically reloads
+  auto-generate-examples: true # Auto-generate example files switch, only generates when not present
 
-  # 代理网络配置 (支持BungeeCord和Velocity)
-  velocity-network: true # 是否启用Velocity网络支持（自动检测BungeeCord）
+  # Proxy network configuration (supports BungeeCord and Velocity)
+  velocity-network: true # Whether to enable Velocity network support (auto-detects BungeeCord)
   
-  # CraftEngine 自定义物品支持
+  # CraftEngine custom item support
   craftengine:
-    enabled: false # 是否启用 CraftEngine 自定义物品支持
-    fallback-material: STONE # 当 CraftEngine 未安装或物品不存在时的备用材质
+    enabled: false # Whether to enable CraftEngine custom item support
+    fallback-material: STONE # Fallback material when CraftEngine is not installed or item doesn't exist
 
   menu-clock:
-    enabled: true # 是否启用整个钟表功能
-    give-on-join: true # 会检测背包中是否已有钟表，避免重复发放。
+    enabled: true # Whether to enable the entire clock feature
+    give-on-join: true # Will check if clock already exists in inventory to avoid duplicate distribution
 
-# 支持&R&G&B颜色格式
+# Supports &R&G&B color format
 messages:
-  default-item-name: "&6时光之镜 &7(右键打开菜单)"
+  default-item-name: "&6Time Mirror &7(Right-click to open menu)"
   message:
-    no-permission: "&c✦ 权限不足，你无法触碰这道指令。"
-    players-only: "&c✦ 只有身临其境的冒险者（玩家）才能使用此令。"
-    menu-not-found: "&c✦ 未曾见过名为 &e{0}&c 的菜单，请检查拼写。"
-    error: "&c✦ 操作受阻，请查看控制台探明原因。"
-    invalid-player: "&c✦ 寻无此人，或他已远去（离线）。"
-    config-update-warning: "&e✦ 检测到旧版配置，正在尝试自动更迭..."
-    reloaded: "&a✦ 配置文件已更新，一切就绪。"
-    io-error: "&c✦ 笔触受阻，无法在卷轴上书写（IO错误），请检查封印权限(文件权限)。"
+    no-permission: "&c✦ Insufficient permissions, you cannot access this command."
+    players-only: "&c✦ Only adventurers in the game (players) can use this command."
+    menu-not-found: "&c✦ No menu named &e{0}&c found, please check spelling."
+    error: "&c✦ Operation blocked, please check console to determine the cause."
+    invalid-player: "&c✦ Player not found or they have gone offline."
+    config-update-warning: "&e✦ Old config detected, attempting automatic migration..."
+    reloaded: "&a✦ Configuration files updated, everything is ready."
+    io-error: "&c✦ Writing blocked, cannot write on scroll (IO error), please check seal permissions (file permissions)."
 
   verbose:
-    config-adding-key: "✦ 拾遗补缺，刻写法则: {0}"
-    config-keys-added: "✦ 卷轴焕新完毕，共增添 {0} 处笔触"
+    config-adding-key: "✦ Filling gaps, inscribing rules: {0}"
+    config-keys-added: "✦ Scroll renewed, added {0} strokes total"
 
   help:
-    header: "&6✿ &e你好呀，旅行者 &6✿"
-    usage: "&7✎ 悬停查看详情，轻触以令之行"
+    header: "&6✿ &eHello there, traveler &6✿"
+    usage: "&7✎ Hover for details, click to execute"
 
   descriptions:
-    open: "&a✦ 翻开指定的魔法卷轴"
-    reload: "&c✦ 让核心法则重焕新生"
-    help: "&e✦ 探索智慧的指引篇章"
+    open: "&a✦ Open the specified magic scroll"
+    reload: "&c✦ Let the core rules be renewed"
+    help: "&e✦ Explore the guiding chapter of wisdom"
 
   command:
-    unknown: "&c✦ 虚空并未回应这句未知的低语，请查阅 /dgm help。"
-    usage-open: "&c✦ 吟唱咒语的真确格式：/dgm open <卷轴名称>"
+    unknown: "&c✦ The void does not respond to this unknown whisper, please check /dgm help."
+    usage-open: "&c✦ Correct format for casting the spell: /dgm open <scroll_name>"
 
   open:
-    error: "&c✦ 界面展开失败，请查阅控制台日志。"
+    error: "&c✦ Interface expansion failed, please check console logs."
 
   menu:
     clock:
-      name: "&6时光之镜 &7(右键打开菜单)"
-      given: "&a✦ 已获赠时光之镜，右键即可映照出菜单！"
-      restored: "&f✦ 物品已完好如初地归还于你。"
+      name: "&6Time Mirror &7(Right-click to open menu)"
+      given: "&a✦ Time Mirror has been gifted, right-click to reflect the menu!"
+      restored: "&f✦ Item has been returned to you intact."
 
   hot-reload:
-    initialized: "✦ 菜单的律动已开始（自重载已启动）。"
-    detected: "✦ 感知到波动: {0}，正在重塑菜单..."
+    initialized: "✦ Menu rhythm has begun (hot reload activated)."
+    detected: "✦ Fluctuation detected: {0}, reshaping menu..."

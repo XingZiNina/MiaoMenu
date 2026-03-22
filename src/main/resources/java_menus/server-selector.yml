@@ -1,65 +1,65 @@
-#这里是服务器选择例子
-menu_title: "&6&l服务器选择器 &7| &f选择服务器"
+# Server selector example
+menu_title: "&6&lServer Selector &7| &fSelect Server"
 rows: 4
 
 items:
   lobby:
     slot: 10
     material: GRASS_BLOCK
-    display_name: "&a&l大厅"
+    display_name: "&a&lLobby"
     lore:
-      - "&7返回主大厅"
+      - "&7Return to main lobby"
       - ""
-      - "&f连接到大厅服务器"
+      - "&fConnect to lobby server"
     left_click_commands:
       - "[player] server lobby"
-      - "[message] &a正在连接到大厅..."
+      - "[message] &aConnecting to lobby..."
       - "[close]"
 
   survival:
     slot: 12
     material: DIAMOND_SWORD
-    display_name: "&c&l生存服"
+    display_name: "&c&lSurvival"
     lore:
-      - "&7经典生存模式"
+      - "&7Classic survival mode"
       - ""
-      - "&f连接到生存服务器"
+      - "&fConnect to survival server"
     left_click_commands:
       - "[player] server survival"
-      - "[message] &a正在连接到生存服..."
+      - "[message] &aConnecting to survival..."
       - "[close]"
 
   creative:
     slot: 14
     material: BEACON
-    display_name: "&b&l创造服"
+    display_name: "&b&lCreative"
     lore:
-      - "&7自由创造世界"
+      - "&7Free creative world"
       - ""
-      - "&f连接到创造服务器"
+      - "&fConnect to creative server"
     left_click_commands:
       - "[player] server creative"
-      - "[message] &a正在连接到创造服..."
+      - "[message] &aConnecting to creative..."
       - "[close]"
 
   minigames:
     slot: 16
     material: FIREWORK_ROCKET
-    display_name: "&e&l小游戏"
+    display_name: "&e&lMinigames"
     lore:
-      - "&7各种小游戏"
+      - "&7Various minigames"
       - ""
-      - "&f连接到小游戏服务器"
+      - "&fConnect to minigames server"
     left_click_commands:
       - "[player] server minigames"
-      - "[message] &a正在连接到小游戏服务器..."
+      - "[message] &aConnecting to minigames..."
       - "[close]"
 
   back:
     slot: 31
     material: ARROW
-    display_name: "&7&l返回"
+    display_name: "&7&lBack"
     lore:
-      - "&7返回主菜单"
+      - "&7Return to main menu"
     left_click_commands:
       - "[menu] test"

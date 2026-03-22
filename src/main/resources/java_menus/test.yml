@@ -1,76 +1,76 @@
-# 菜单标题 (箱子打开时顶部的名字)
-menu_title: "&6&l主菜单 &7| &f服务器名称"
+# Menu title (name shown at top when chest opens)
+menu_title: "&6&lMain Menu &7| &fServer Name"
 
-# 菜单行数 (必须填 1, 2, 3, 4, 5 或 6)
-# 1行 = 9个格子, 6行 = 54个格子 (满)
+# Menu rows (must be 1, 2, 3, 4, 5, or 6)
+# 1 row = 9 slots, 6 rows = 54 slots (full)
 rows: 6
 
 items:
-  # 这里的 "server_info" 是这个物品的ID，你可以随意修改，不要重复即可
+  # The "server_info" here is the item ID, you can change it freely, just don't duplicate
   server_info:
-    slot: 10 #图标显示的格数
-    material: KNOWLEDGE_BOOK # 说明: 物品的材质ID (必须是Minecraft原版存在的ID) 我推荐使用MCwiki查询
-    display_name: "&e&l服务器信息"     # 说明: 物品显示的名字 (支持颜色代码 &)
-    lore: # 说明: 物品的描述文字 (也就是鼠标放上去看到的几行字)
-      - "&7点击查看服务器信息"
+    slot: 10 # Slot where icon displays
+    material: KNOWLEDGE_BOOK # Note: Item material ID (must be a Minecraft vanilla ID) I recommend using MCwiki to look up
+    display_name: "&e&lServer Info"     # Note: Item display name (supports color codes &)
+    lore: # Note: Item description text (the lines shown when hovering)
+      - "&7Click to view server information"
       - ""
-      - "&f在线玩家: &a%server_online%&f/&a%server_max_players%"  # 常用变量 (需要安装PlaceholderAPI插件):
-      - "&f服务器版本: &a%server_version%"
+      - "&fOnline Players: &a%server_online%&f/&a%server_max_players%"  # Common variables (requires PlaceholderAPI plugin):
+      - "&fServer Version: &a%server_version%"
       - ""
-      - "&e点击查看详细信息"
-    left_click_commands: # 说明: 鼠标左键点击时执行的一系列动作 (按顺序执行)
-    # 此处可替换成right_click_commands  left是左键 right是右键
-      - "[message] &6=== 服务器信息 ===" # [message] = 发送一条聊天消息给点击的玩家
-      - "[player] list" # [player] = 让玩家自己执行后面的命令 (相当于玩家在聊天框输入)
-      - "[close]" # [close] = 点击后关闭菜单
-      # 可选项player(玩家执行) 、cmd（控制台执行）、message(发送消息)、close（关闭菜单）
-      #下面的均这么设置即可
+      - "&eClick to view detailed information"
+    left_click_commands: # Note: Series of actions executed when left-clicking (executed in order)
+    # This can be replaced with right_click_commands  left is left click, right is right click
+      - "[message] &6=== Server Information ===" # [message] = Send a chat message to the clicking player
+      - "[player] list" # [player] = Make the player execute the following command (equivalent to player typing in chat)
+      - "[close]" # [close] = Close menu after click
+      # Options: player (player executes), cmd (console executes), message (send message), close (close menu)
+      # Set the following items in the same way
 
-  # 示例物品 2: 传送
+  # Example Item 2: Teleport
   teleport_spawn:
     slot: 12
     material: COMPASS
-    display_name: "&a&l传送回城"
+    display_name: "&a&lTeleport to Spawn"
     lore:
-      - "&7点击传送至主城"
+      - "&7Click to teleport to main city"
       - ""
-      - "&f立即传送至安全的主城"
-      - "&f区域，适合新手玩家"
+      - "&fInstantly teleport to safe main city"
+      - "&farea, suitable for new players"
     left_click_commands:
       - "[player] spawn"
-      - "[message] &a已传送至主城!"
+      - "[message] &aTeleported to main city!"
 
-  # 示例物品 3: 个人信息
+  # Example Item 3: Player Info
   player_info:
     slot: 14
     material: PLAYER_HEAD
-    display_name: "&b&l个人信息"
+    display_name: "&b&lPlayer Info"
     lore:
-      - "&7查看您的个人信息"
-      - "&f金钱: &6%vault_eco_balance%"
+      - "&7View your personal information"
+      - "&fMoney: &6%vault_eco_balance%"
     left_click_commands:
-      - "[message] &6=== 个人信息 ==="
-      - "[message] &f你的等级很高哦！"
+      - "[message] &6=== Player Info ==="
+      - "[message] &fYour level is very high!"
 
-  # 示例物品 4: 商店
+  # Example Item 4: Shop
   shop:
     slot: 16
     material: EMERALD
-    display_name: "&2&l商店系统"
+    display_name: "&2&lShop System"
     lore:
-      - "&7打开服务器商店"
+      - "&7Open server shop"
     left_click_commands:
       - "[menu] shop"
-      # [menu] = 直接打开本插件的另一个菜单文件 (shop.yml)
-      # 相当于 dgm open shop
+      # [menu] = Directly open another menu file from this plugin (shop.yml)
+      # Equivalent to dgm open shop
 
-  # 示例物品 6: 关闭按钮
+  # Example Item 6: Close Button
   close:
     slot: 49
-    # 第6行最中间的位置 (45+4=49)
+    # Middle position of row 6 (45+4=49)
     material: BARRIER
-    display_name: "&c&l关闭菜单"
+    display_name: "&c&lClose Menu"
     lore:
-      - "&7点击关闭此菜单"
+      - "&7Click to close this menu"
     left_click_commands:
       - "[close]"

@@ -1,44 +1,46 @@
-# 喵喵菜单 ----喵喵喵喵最适合你的菜单
+# MiaoMenu - Meow Meow Meow The Perfect Menu For You
 
 [![Bukkit API](https://img.shields.io/badge/Spigot-Bukkit%201.21.8-4CC417?style=flat-square&logo=spigot&logoColor=white&labelColor=FFD700)](https://hub.spigotmc.org/javadocs/bukkit/)
 [![Maven](https://img.shields.io/badge/Maven-CB112A?style=flat-square&logo=apachemaven&logoColor=white)](https://maven.apache.org/)
 [![Java](https://img.shields.io/badge/OpenJDK-21+-ED8B00?style=flat-square&logo=openjdk&logoColor=white&labelColor=ED8B00)](https://www.oracle.com/java/)
 [![GitHub](https://img.shields.io/badge/GitHub-MiaoMenu-6e5494?style=flat-square&logo=github&logoColor=white&labelColor=8a2be2&color=0969da)](https://github.com/XingZiNina/MiaoMenu)
 
-![这是图片](/pic/1.png)
+![Preview Image](/pic/1.png)
 
-**“一份配置，两端适配”** —— 这就是 MiaoMenu 的核心理念。插件会自动检测玩家是用 Java 版还是基岩版登录，然后渲染完全对应的界面：
-- Java 玩家 -> 经典背包 GUI
-- 基岩玩家 -> 原生表单 UI
+**"One Config, Dual Platform"** — This is the core philosophy of MiaoMenu. The plugin automatically detects whether players are using Java Edition or Bedrock Edition, then renders the corresponding interface:
+- Java Players -> Classic Inventory GUI
+- Bedrock Players -> Native Form UI
 
-![这是图片](/pic/2.png)
+![Preview Image](/pic/2.png)
 
-## 好用的功能
+## Great Features
 
-### 1. 自动侦测热重载
-改完配置文件，**无需输入重载指令(其实也有reload指令)**，菜单立即生效。
-依靠 WatchService 的文件监控，延迟仅 0.5 秒！！
-### 2. 菜单时钟（持久化物品）
-生成带 NBT 标识的钟表，玩家死亡、下线也不会丢。
-### 3. 全面的插件集成
--  PlaceholderAPI：动态占位符随心替换
--  Floodgate/Geyser：自动识别 Bedrock 玩家
--  BStats：已集成，匿名统计使用数据
+### 1. Auto-Detect Hot Reload
+After modifying configuration files, **no need to enter reload commands (though there is a reload command available)**, menus take effect immediately.
+Powered by WatchService file monitoring with a delay of only 0.5 seconds!!
 
-# 结构清晰 新手小白也好上手自己维护
-![这是图片](/pic/3.png)
-# 想要啥功能 自己都能写！该有的功能为你写好 基础功能一个不少捏[/MD]
-![这是图片](/pic/4.png)
+### 2. Menu Clock (Persistent Item)
+Generates a clock with NBT tags that won't be lost even if players die or log out.
 
-## 超低门槛上手
+### 3. Comprehensive Plugin Integration
+- PlaceholderAPI: Dynamic placeholders replacement at will
+- Floodgate/Geyser: Automatically detect Bedrock players
+- BStats: Integrated, anonymous usage statistics
+
+# Clear Structure, Easy for Beginners to Maintain
+![Preview Image](/pic/3.png)
+# Want Any Feature? You Can Write It Yourself! The Features You Need Are Ready, Basic Features Are All Here![/MD]
+![Preview Image](/pic/4.png)
+
+## Super Easy to Get Started
 ```bash
-/dgm open <菜单名> //打开菜单
-/dgm reload //热重载配置(一般用不到)
-/dgm help //获取帮助
+/dgm open <menu_name> // Open menu
+/dgm reload // Hot reload config (usually not needed)
+/dgm help // Get help
 ```
-#### 有Tab补全不用担心喵
-### 这么高度自定义DIY的配置文件 居然是免费的！真是肥美啊喵[/MD]
-![这是图片](/pic/5.png)
+#### Tab completion available, don't worry meow
+### Such Highly Customizable DIY Configuration Files Are Actually Free! Truly Delicious Meow[/MD]
+![Preview Image](/pic/5.png)
 
-#### 本菜单在格式上借鉴了杜蕾斯菜单(其实是当初用杜蕾斯不舒服 又不想改太多格式 所以就用的杜蕾斯的格式)
-### 本菜单不跟市面上主流菜单(Trmenu Delxumenu)比较 这款喵喵菜单只是十分符合我个人的使用习惯喵！
+#### This menu's format was inspired by Durulis Menu (Actually I was uncomfortable with Durulis back then and didn't want to change the format too much, so I used Durulis's format)
+### This menu is not compared to mainstream menus on the market (Trmenu Delxumenu) - this MiaoMenu just fits my personal usage habits perfectly meow!

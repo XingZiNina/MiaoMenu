@@ -31,7 +31,7 @@ public class PlayerLifecycleListener implements Listener {
     }
     @EventHandler(priority = EventPriority.HIGH)
     public void onDeath(PlayerDeathEvent event) {
-        clockManager.removeClockFromDrops(event.getEntity(), event.getDrops());
+        clockManager.removeClockFromDrops(event.getDrops());
     }
     @EventHandler(priority = EventPriority.MONITOR)
     public void onRespawn(PlayerRespawnEvent event) {

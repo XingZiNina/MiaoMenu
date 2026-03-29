@@ -68,8 +68,8 @@ public class MenuClockManager {
         String defaultMenu = plugin.getConfig().getString("settings.default-menu", "test");
         plugin.openSmartMenu(player, defaultMenu);
     }
-    @SuppressWarnings("unused") // Suppress IDE warning for unused parameter
-    public void removeClockFromDrops(Player player, java.util.List<ItemStack> drops) {
+    public void removeClockFromDrops(java.util.List<ItemStack> drops) {
+        drops.removeIf(this::isMenuClock);
     }
     public void ensureClock(Player player) {
         giveClockToPlayer(player);

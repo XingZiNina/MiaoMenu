@@ -21,6 +21,7 @@ public class ActionRegistry {
         register("message", new MessageAction());
         register("close", new CloseAction());
         register("cmd", new CmdAction());
+        register("menu", new com.fluxcraft.MiaoMenu.menu.action.impl.MenuAction());
     }
     public void register(String prefix, MenuAction action) {
         actions.put(prefix.toLowerCase(), action);

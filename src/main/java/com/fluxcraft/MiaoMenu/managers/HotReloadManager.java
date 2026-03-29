@@ -103,7 +103,7 @@ public class HotReloadManager {
                     plugin.getLogger().warning(Lang.get("message.io-error"));
                 }
             }
-        }, "DGeyserMenu-HotReload-Thread");
+        }, "MiaoMenu-HotReload-Thread");
         watcherThread.setDaemon(true);
         watcherThread.start();
     }

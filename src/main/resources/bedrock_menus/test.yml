@@ -1,0 +1,75 @@
+menu:
+  title: "§6§lMain Menu"
+  subtitle: "§7Welcome to the server!"
+  footer: "§8Server version 1.21.x"
+
+  items:
+    - text: "§e§lServer Info\n§7Click to view server status"
+      icon: "textures/items/book_enchanted"
+      icon_type: "path"
+      command: ""
+      execute_as: "player"
+
+    - text: "§a§lTeleport\n§7Quickly travel to different locations"
+      icon: "textures/items/compass_item"
+      icon_type: "path"
+      command: "warp"
+      execute_as: "player"
+
+    - text: "§b§lPlayer Info\n§7View your gameplay data"
+      icon: "textures/items/empty_armor_slot_helmet"
+      icon_type: "path"
+      command: "profile"
+      execute_as: "player"
+      conditions:
+        operator: AND
+        requirements:
+          - type: placeholder_contains
+            placeholder: "%player_name%"
+            value: ""
+      lock_message: "&cYou do not meet the requirements to view player info yet."
+
+    - text: "§2§lShop\n§7Buy and sell items"
+      icon: "textures/items/emerald"
+      icon_type: "path"
+      command: "shop"
+      execute_as: "player"
+
+    - text: "§d§lQuest System\n§7View available quests"
+      icon: "textures/items/book_normal"
+      icon_type: "path"
+      command: "quests"
+      execute_as: "player"
+      conditions:
+        operator: OR
+        requirements:
+          - type: advancement
+            advancement: "minecraft:story/root"
+          - type: permission
+            permission: "quest.access"
+      lock_message: "&cYou need to complete the initial story progress before viewing quests"
+
+    - text: "§c§lMinigames\n§7Join fun minigames"
+      icon: "textures/items/diamond_sword"
+      icon_type: "path"
+      command: "games"
+      execute_as: "player"
+
+    - text: "§5§lFriends\n§7Manage your friends list"
+      icon: "textures/items/name_tag"
+      icon_type: "path"
+      command: "friends"
+      execute_as: "player"
+
+    - text: "§9§lHelp\n§7View server help"
+      icon: "textures/items/paper"
+      icon_type: "path"
+      command: "help"
+      execute_as: "player"
+
+view_requirement:
+  deny_message: "&cYou cannot open the Bedrock main menu right now."
+  fallback_menu: "test"
+  requirements:
+    - type: permission
+      permission: dgeysermenu.use

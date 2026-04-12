@@ -1,0 +1,33 @@
+name: ${project.name}
+version: ${project.version}
+main: com.fluxcraft.MiaoMenu.MiaoMenu
+api-version: 1.21
+description: Lightweight Java and Bedrock menu plugin
+author: MingLi
+folia-supported: true
+softdepend: [Floodgate, PlaceholderAPI, CraftEngine]
+commands:
+  dgeysermenu:
+    description: Main command
+    usage: /<command> <open|reload|help>
+    aliases: [dgm, fluxmenu]
+  getmenuclock:
+    description: Get the menu clock
+    usage: /<command>
+    permission: dgeysermenu.admin
+permissions:
+  dgeysermenu.*:
+    description: All permissions
+    children:
+      dgeysermenu.use: true
+      dgeysermenu.admin: true
+      dgeysermenu.reload: true
+  dgeysermenu.use:
+    description: Use menu commands
+    default: true
+  dgeysermenu.admin:
+    description: Administrative permission
+    default: op
+  dgeysermenu.reload:
+    description: Reload the plugin
+    default: op

@@ -1,0 +1,114 @@
+menu_title: "&6&lMain Menu &7| &fServer Name"
+# Menu rows (must be 1, 2, 3, 4, 5 or 6)
+# 1 row = 9 slots, 6 rows = 54 slots (full)
+rows: 6
+# Menu-level requirement: shows a message and falls back when unmet
+view_requirement:
+  deny_message: "&cYou cannot open this menu yet."
+  fallback_menu: "test"
+  requirements:
+    - type: permission
+      permission: dgeysermenu.use
+items:
+  # "server_info" is the item id and can be renamed freely as long as it stays unique
+  server_info:
+    slot: 10 # display slot
+    # material supports multiple prefixes:
+    #   Vanilla material: KNOWLEDGE_BOOK, PAPER, etc.
+    #   Vanilla material + custom_model_data: resource-pack model texture
+    #   craftengine:namespace:item_id  -> CraftEngine custom item
+    #   itemsadder:namespace:item_id   -> ItemsAdder custom item
+    #   mmoitems:type:id               -> MMOItems custom item
+    #   headdb:head_id                 -> HeadDatabase player head
+    #   base64head:base64_string       -> Base64 custom head
+    material: KNOWLEDGE_BOOK
+    custom_model_data: 0 # resource-pack model id (0 = unused, requires resource pack)
+    display_name: "&e&lServer Info"
+    lore:
+      - "&7Click to view server information"
+      - ""
+      - "&fOnline Players: &a%server_online%&f/&a%server_max_players%"
+      - "&fServer Version: &a%server_version%"
+      - ""
+      - "&eClick to view details"
+    left_click_commands:
+      - "[message] &6=== Server Info ==="
+      - "[player] list"
+      - "[close]"
+
+  teleport_spawn:
+    slot: 12
+    material: COMPASS
+    display_name: "&a&lTeleport to Spawn"
+    lore:
+      - "&7Click to teleport to spawn"
+      - ""
+      - "&fTeleport instantly to the safe spawn area"
+      - "&fRecommended for new players"
+    left_click_commands:
+      - "[player] spawn"
+      - "[message] &aTeleported to spawn!"
+
+  player_info:
+    slot: 14
+    material: PLAYER_HEAD
+    display_name: "&b&lPlayer Info"
+    lore:
+      - "&7View your personal information"
+      - ""
+      - "&fName: &e%player_name%"
+      - "&fLevel: &a%player_level%"
+      - "&fWorld: &b%player_world%"
+      - "&fBalance: &6%vault_eco_balance%"
+
+    conditions:
+      operator: AND
+      requirements:
+        - type: placeholder_contains
+          placeholder: "%player_name%"
+          value: ""
+    lock_message: "&cYou do not meet the requirements to view player info yet."
+    left_click_commands:
+      - "[message] &6=== Player Info ==="
+      - "[message] &fName: &e%player_name%"
+      - "[message] &fLevel: &a%player_level%"
+      - "[message] &fWorld: &b%player_world%"
+      - "[message] &fBalance: &6%vault_eco_balance%"
+      - "[close]"
+
+  shop:
+    slot: 16
+    material: EMERALD
+    display_name: "&2&lShop"
+    lore:
+      - "&7Open the server shop"
+      - ""
+      - "&fBuy and sell all kinds of items"
+      - "&fExchange for rare gear and rewards"
+      - ""
+      - "&eClick to open the shop"
+    conditions:
+      operator: AND
+      requirements:
+        - type: advancement
+          advancement: "minecraft:story/root"
+      children:
+        - operator: OR
+          requirements:
+            - type: permission
+              permission: "vip.shop"
+            - type: progress
+              objective: "trade_count"
+              value: 5
+    lock_message: "&cYou must complete the initial story progress before using the shop"
+    left_click_commands:
+      - "[player] shop"
+
+  close:
+    slot: 49
+    material: BARRIER
+    display_name: "&c&lClose Menu"
+    lore:
+      - "&7Click to close this menu"
+    left_click_commands:
+      - "[close]"

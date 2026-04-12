@@ -1,0 +1,117 @@
+# Do not change the version numbers casually.
+config-version: 15 # config.yml version check
+menu-version: 6 # menu example version check
+
+settings:
+  open-menu-sound:
+    enabled: true # whether to play a sound when opening a menu
+    sound: "entity.experience_orb.pickup" # vanilla Minecraft sound
+    volume: 1.0 # range 0.0-1.0
+    pitch: 1.0 # range 0.5-2.0
+
+  default-menu: "test"
+
+  hot-reload:
+    enabled: true # automatically reload menus when files are saved
+  auto-generate-examples: true # generate example files only when missing
+
+  velocity-network: true # enable Velocity network support (auto-detects BungeeCord)
+
+  item-resolver:
+    fallback-material: STONE # fallback vanilla material when provider plugin/item is unavailable
+
+  menu-clock:
+    enabled: true # enable the menu clock feature
+    give-on-join: true # avoids giving duplicates if the player already has one
+
+messages:
+  default-item-name: "&6Time Mirror &7(Right-click to open menu)"
+  message:
+    no-permission: "&c✦ You do not have permission to use this command."
+    players-only: "&c✦ Only players can use this command."
+    menu-not-found: "&c✦ No menu named &e{0}&c was found. Please check the spelling."
+    error: "&c✦ The operation failed. Please check the console for details."
+    invalid-player: "&c✦ Player not found or currently offline."
+    requirement-denied: "&c✦ You do not meet the requirements for this menu action."
+    item-locked: "&c✦ This feature is not unlocked yet."
+    unsafe-input: "&c✦ The input did not pass security validation and has been blocked."
+    rate-limited: "&c✦ You are doing that too quickly. Please try again later."
+    config-update-warning: "&e✦ An outdated config was detected. Attempting automatic upgrade..."
+    reloaded: "&a✦ Configuration reloaded successfully."
+    io-error: "&c✦ Failed to write file data (IO error). Please check file permissions."
+    craftengine-missing: "&e✦ CraftEngine is not installed. A fallback material has been used."
+    craftengine-item-not-found: "&e✦ CraftEngine item &6{0}&e was not found. A fallback material has been used."
+
+  verbose:
+    config-adding-key: "✦ Adding missing config key: {0}"
+    config-keys-added: "✦ Config update complete. Added {0} missing entries"
+
+  help:
+    header: "&6✿ &eHello, adventurer &6✿"
+    usage: "&7✎ Hover for details, click to execute"
+
+  descriptions:
+    open: "&a✦ Open the specified menu"
+    reload: "&c✦ Reload the plugin configuration"
+    help: "&e✦ Show the help page"
+
+  command:
+    unknown: "&c✦ Unknown subcommand. Please use /dgm help."
+    usage-open: "&c✦ Correct usage: /dgm open <menu-name>"
+
+  open:
+    error: "&c✦ Failed to open the interface. Please check the console log."
+
+  menu:
+    clock:
+      name: "&6Time Mirror &7(Right-click to open menu)"
+      given: "&a✦ You received a Time Mirror. Right-click to open the menu!"
+      restored: "&f✦ Your item has been restored successfully."
+
+  hot-reload:
+    initialized: "✦ Menu hot-reload initialized."
+    detected: "✦ Change detected: {0}. Reloading menus..."
+
+  log:
+    plugin:
+      enabled: "MiaoMenu v{0} Enabled."
+      enable-failed: "Fatal error occurred while enabling MiaoMenu. Disabling plugin."
+    config:
+      backup-delete-failed: "Failed to delete backup file {0}."
+      backup-create-failed: "Failed to back up file {0}; continuing with overwrite."
+      menu-refresh-failed: "Failed to refresh menu example files."
+    command:
+      register-failed: "Failed to register command '{0}'. Please check your plugin.yml."
+      descriptions-missing: "Could not find 'messages.descriptions' node in config.yml."
+      execute-failed: "Failed to execute command '{0}' for sender '{1}'."
+    action:
+      dispatch-failed: "Failed to dispatch action '{0}' for player '{1}'."
+    hot-reload:
+      initialize-failed: "Failed to initialize HotReloadManager. Menu hot-reload will be disabled."
+      loop-failed: "HotReloadManager watcher loop failed."
+    floodgate:
+      player-check-failed: "Failed to check whether player {0} is a Floodgate player."
+    bstats:
+      initialize-failed: "BStats initialization failed."
+    proxy:
+      detected: "Proxy detected: {0} - cross-server commands are enabled"
+      velocity-forwarding-required: "Velocity mode: please enable BungeeCord plugin message forwarding"
+      disabled: "No proxy detected - cross-server commands are disabled"
+      not-detected: "No proxy detected, unable to send cross-server command"
+      send-failed: "Failed to send cross-server command, target server: {0}"
+      channel-not-registered: "Channel {0} is not registered."
+      message-create-failed: "Failed to create cross-server message, target server: {0}"
+      message-received: "Received BungeeCord message: {0}"
+      response-handle-failed: "Failed to handle BungeeCord response."
+    java-menu:
+      directory-create-failed: "Failed to create java_menus directory."
+      load-failed: "Failed to load menu: {0}"
+      open-failed: "Error opening menu {0}"
+    bedrock-menu:
+      directory-create-failed: "Failed to create bedrock_menus directory. Please check file permissions."
+      load-failed: "Failed to load Bedrock menu: {0}"
+      send-failed: "Failed to send form '{0}' to Bedrock player {1}."
+      form-build-returned-null: "Failed to build form for Bedrock player: {0}"
+      form-build-failed: "Failed to build Bedrock form."
+      reflection-send-failed: "Failed to send Floodgate form for menu '{0}' to player {1}."
+      reflection-setup-failed: "Failed to initialize Floodgate/Cumulus reflection access."

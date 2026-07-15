@@ -2,7 +2,7 @@
 
 > 轻量级 Java 版和基岩版跨平台菜单插件，支持 Paper 26.2 / Folia / Java 25
 
-[![Java CI](https://github.com/user/MiaoMenu/actions/workflows/ci.yml/badge.svg)](https://github.com/user/MiaoMenu/actions/workflows/ci.yml)
+[![Java CI](https://github.com/Yamada0001/MiaoMenu/actions/workflows/ci.yml/badge.svg?branch=26.2)](https://github.com/Yamada0001/MiaoMenu/actions/workflows/ci.yml)
 
 ## 目录
 

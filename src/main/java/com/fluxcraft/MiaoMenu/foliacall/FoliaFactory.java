@@ -34,7 +34,7 @@ public final class FoliaFactory {
     private static final class FoliaSchedulerAdapter implements FoliaAdapter {
         @Override
         public void runTaskLaterForEntity(Plugin plugin, Entity entity, Runnable task, long delay) {
-            entity.getScheduler().runDelayed(plugin, scheduledTask -> task.run(), null, delay);
+            entity.getScheduler().runDelayed(plugin, _ -> task.run(), null, delay);
         }
     }
 }

@@ -1,573 +1,477 @@
-# MiaoMenu / 喵喵菜单插件
+# MiaoMenu
 
-[English](../README_en_us.md) | 中文
+> 轻量级 Java 版和基岩版跨平台菜单插件，支持 Paper 26.2 / Folia / Java 25
 
-> 面向 Paper 1.21.11 的轻量级菜单插件，同时为 Java 版与基岩版玩家提供原生交互体验。
+[![Java CI](https://github.com/user/MiaoMenu/actions/workflows/ci.yml/badge.svg)](https://github.com/user/MiaoMenu/actions/workflows/ci.yml)
 
-## 项目概览
+## 目录
 
-MiaoMenu 是一个双端菜单插件：
+- [功能特性](#功能特性)
+- [环境要求](#环境要求)
+- [安装说明](#安装说明)
+- [快速开始](#快速开始)
+- [配置指南](#配置指南)
+- [命令与权限](#命令与权限)
+- [菜单系统](#菜单系统)
+- [需求条件系统](#需求条件系统)
+- [物品解析器](#物品解析器)
+- [热重载](#热重载)
+- [架构文档](#架构文档)
+- [开发者指南](#开发者指南)
+- [CI/CD 流水线](#cicd-流水线)
+- [性能优化记录](#性能优化记录)
+- [变更日志](#变更日志)
 
-- Java 玩家使用箱子 GUI 菜单
-- Bedrock 玩家使用 Floodgate 表单菜单
-- 自动识别玩家类型并打开对应菜单
-- 支持 PlaceholderAPI、跨服跳转、热重载与条件系统
-- 提供菜单时钟、示例菜单与权限控制
+---
 
-当前版本：`2.7.7.9`
+## 功能特性
 
-## 界面预览
+- **双平台菜单**：Java 版 GUI 背包菜单 + 基岩版 Floodgate Cumulus 表单
+- **Folia 完整兼容**：通过反射检测 + 实体调度器实现无缝 Folia 支持
+- **热重载**：基于 WatchService 的文件监听，修改配置后自动生效，无需重启
+- **需求条件系统**：支持权限、占位符、进度、记分板、成就等多维度条件判断
+- **多物品插件兼容**：CraftEngine、ItemsAdder、MMOItems、HeadDatabase、Base64 头颅
+- **PlaceholderAPI 集成**：全菜单文本支持占位符解析
+- **代理跨服**：BungeeCord / Velocity 自动检测与跨服切换
+- **安全加固**：速率限制器 + 输入验证器 + 命令安全开关
+- **菜单时钟**：专属时钟物品，右键打开默认菜单
+- **多语言系统**：内置 5 种语言（简体中文 / 繁體中文 / English / Tiếng Việt / 日本語），支持自定义扩展
+- **bStats 统计**：匿名使用数据上报（可关闭）
 
-### Java 菜单预览
+---
 
-![Java 菜单预览 1](../pic/1.png)
-![Java 菜单预览 2](../pic/2.png)
+## 环境要求
 
-### Bedrock 菜单预览
+| 组件 | 最低版本 | 推荐版本 |
+|------|---------|---------|
+| Minecraft 服务端 | Paper 26.2 | Paper 26.2.build.60+ |
+| Java | 25 (LTS) | GraalVM JDK 25 |
+| Folia | 可选 | 26.1.2+ |
+| Floodgate | 可选（基岩版菜单需要） | 2.2.5+ |
+| PlaceholderAPI | 可选 | 2.12.2+ |
 
-![Bedrock 菜单预览 3](../pic/3.png)
-![Bedrock 菜单预览 4](../pic/4.png)
-![Bedrock 菜单预览 5](../pic/5.png)
+---
 
-## 核心优点
+## 安装说明
 
-### 1. 双版本原生菜单体验
-- Java 玩家看到熟悉的箱子菜单
-- Bedrock 玩家看到适配移动端的原生表单
-- 插件内部自动分流，无需手动区分命令入口
+1. 将 `MiaoMenu.jar` 放入服务端的 `plugins/` 目录
+2. 启动服务端，插件会自动生成默认配置文件
+3. 编辑 `plugins/MiaoMenu/config.yml` 进行个性化配置
+4. 在 `plugins/MiaoMenu/java_menus/` 和 `bedrock_menus/` 中创建菜单文件
+5. 执行 `/dgm reload` 或重启服务端生效
 
-### 2. 面向实际服务器场景
-- 支持 PlaceholderAPI 动态变量
-- 支持 Floodgate / Geyser 场景下的基岩玩家菜单
-- 支持 Velocity / BungeeCord 风格的跨服连接命令
-- 支持 CraftEngine 自定义物品回退材质
+---
 
-### 3. 条件系统完整
-- 支持菜单级 `view_requirement`
-- 支持物品级 `conditions`
-- 支持可复用的 `requirement_blocks`
-- 支持 `deny_message` 与 `fallback_menu`
-- 支持权限、进度、计分板、进度成就、占位符比较等条件
+## 快速开始
 
-### 4. 运维体验友好
-- 支持配置热重载
-- 菜单示例文件可自动生成
-- 菜单时钟支持自动发放、死亡保护、右键打开菜单
-- 配置文本统一在 `config.yml` 的 `messages` 节点管理
+### 创建第一个 Java 版菜单
 
-### 5. 兼容现有配置思路
-- Java 菜单结构与 DeluxeMenus 风格接近
-- 对传统 YAML 菜单服管理方式更加友好
-
-## 功能总览
-
-### Java 菜单
-Java 菜单位于 `src/main/resources/java_menus/`，支持：
-
-- `menu_title`
-- `rows`
-- `items.<id>.slot`
-- `material`
-- `custom_model_data`
-- `display_name`
-- `lore`
-- `left_click_commands`
-- `right_click_commands`
-- `conditions`
-- `lock_message`
-- `view_requirement`
-
-示例文件：
-- `test.yml`
-- `server-selector.yml`
-
-### Bedrock 菜单
-基岩菜单位于 `src/main/resources/bedrock_menus/`，支持：
-
-- `menu.title`
-- `menu.subtitle`
-- `menu.footer`
-- `menu.items[*].text`
-- `icon`
-- `icon_type`
-- `command`
-- `execute_as`
-- `conditions`
-- `lock_message`
-- `view_requirement`
-
-### 智能菜单打开逻辑
-插件会自动判断：
-
-- 若玩家是 Floodgate 基岩玩家，则打开 Bedrock 菜单
-- 否则打开 Java 菜单
-
-这意味着同一个命令入口可以同时服务两类玩家。
-
-### 命令系统
-插件注册了以下命令：
-
-```text
-/dgeysermenu open <menu-name>
-/dgeysermenu reload
-/dgeysermenu help
-/dgm open <menu-name>
-/dgm reload
-/dgm help
-/fluxmenu open <menu-name>
-/getmenuclock
-```
-
-说明：
-- `dgm` 与 `fluxmenu` 是主命令别名
-- `open` 用于打开指定菜单
-- `reload` 用于重载配置与菜单文件
-- `help` 用于显示帮助信息
-- `getmenuclock` 用于获取菜单时钟
-
-### 菜单时钟
-菜单时钟是插件的一项特色功能：
-
-- 玩家加入时可自动获得时钟
-- 若时钟丢失，可自动补发
-- 玩家死亡时，菜单时钟不会掉落
-- 玩家右键时钟即可打开默认菜单
-- 时钟名称由 `messages.menu.clock.name` 控制
-
-### 热重载
-在配置中启用后：
-
-- 保存配置文件后可自动刷新菜单
-- 无需频繁重启服务器
-- 更适合高频调试菜单布局与按钮逻辑
-
-### 跨服支持
-插件支持代理环境中的跨服连接命令：
-
-- 可检测 Velocity 模式
-- 可检测 BungeeCord 风格信道
-- 菜单按钮可以执行类似 `server lobby` 的跳转逻辑
-
-示例见 `server-selector.yml`。
-
-### PlaceholderAPI 支持
-如果服务器安装了 PlaceholderAPI，可在：
-
-- `display_name`
-- `lore`
-- 条件判断中的占位符
-- 菜单提示文本
-
-中使用动态变量，例如：
+在 `plugins/MiaoMenu/java_menus/` 中创建 `my-menu.yml`：
 
 ```yaml
-display_name: "&b%player_name%"
-lore:
-  - "&f等级: &e%player_level%"
-  - "&f金币: &6%vault_eco_balance%"
+menu_title: "&6&l我的菜单"
+rows: 3
+
+items:
+  spawn:
+    slot: 13
+    material: GRASS_BLOCK
+    display_name: "&a返回主城"
+    lore:
+      - "&7点击传送到主城出生点"
+    left_click_commands:
+      - "[cmd] spawn"
+
+  close:
+    slot: 22
+    material: BARRIER
+    display_name: "&c关闭菜单"
+    left_click_commands:
+      - "[close]"
 ```
 
-## 安装方法
+### 创建基岩版菜单
 
-### 环境要求
-- Java 21
-- Paper 1.21.11 或兼容实现
-- 若需基岩菜单：安装 Floodgate
-- 若需占位符解析：安装 PlaceholderAPI
-- 若需跨服跳转：建议在代理环境下使用
-
-### 安装步骤
-1. 将插件 jar 放入服务器 `plugins` 目录
-2. 启动服务器
-3. 首次启动后会生成配置与示例菜单
-4. 根据需求修改 `config.yml`、`java_menus/`、`bedrock_menus/`
-5. 使用 `/dgm reload` 或重启服务器使配置生效
-
-## 权限节点
-
-来自 `plugin.yml` 的权限定义如下：
+在 `plugins/MiaoMenu/bedrock_menus/` 中创建同名文件 `my-menu.yml`：
 
 ```yaml
-dgeysermenu.*:
-  children:
-    dgeysermenu.use: true
-    dgeysermenu.admin: true
-    dgeysermenu.reload: true
-
-dgeysermenu.use:
-  default: true
-
-dgeysermenu.admin:
-  default: op
-
-dgeysermenu.reload:
-  default: op
+menu_title: "我的菜单"
+items:
+  spawn:
+    text: "返回主城"
+    icon_type: path
+    icon_data: "textures/blocks/grass.png"
+    left_click_commands:
+      - "[cmd] spawn"
+  close:
+    text: "关闭菜单"
+    left_click_commands:
+      - "[close]"
 ```
 
-### 权限说明
-- `dgeysermenu.use`：允许使用菜单基础命令
-- `dgeysermenu.admin`：允许使用管理功能与获取菜单时钟
-- `dgeysermenu.reload`：允许重载配置
-- `dgeysermenu.*`：授予全部权限
+---
 
-### 额外建议
-在菜单条件中，你还可以自行引用其他权限节点，例如：
+## 配置指南
 
-```yaml
-requirements:
-  - type: permission
-    permission: vip.shop
-```
+### config.yml 核心配置
 
-这类权限并非插件固定注册项，但可以作为业务条件判断使用。
-
-## 配置文件详解
-
-主配置文件：`src/main/resources/config.yml`
-
-### 顶层版本字段
-```yaml
-config-version: 15
-menu-version: 6
-```
-
-- `config-version`：配置文件版本校验
-- `menu-version`：示例菜单版本校验
-
-### 打开菜单音效
 ```yaml
 settings:
+  lang: "en-us"                   # 语言选择（en-us / zh-cn / zh-tw / vi-vn / ja-jp）
+  default-menu: test              # 默认菜单名称（右键时钟打开）
   open-menu-sound:
-    enabled: true
-    sound: "entity.experience_orb.pickup"
+    enabled: true                 # 开启菜单打开音效
+    sound: entity.experience_orb.pickup
     volume: 1.0
     pitch: 1.0
-```
-
-说明：
-- `enabled`：是否启用打开菜单音效
-- `sound`：播放的原版声音键名
-- `volume`：音量
-- `pitch`：音调
-
-### 默认菜单
-```yaml
-settings:
-  default-menu: "test"
-```
-
-玩家右键菜单时钟时，会打开这里指定的默认菜单。
-
-### 热重载
-```yaml
-settings:
-  hot-reload:
-    enabled: true
-```
-
-启用后，保存菜单文件时会尝试自动刷新。
-
-### 自动生成示例
-```yaml
-settings:
-  auto-generate-examples: true
-```
-
-启用后，缺失示例菜单时会自动补全。
-
-### 代理网络支持
-```yaml
-settings:
-  velocity-network: true
-```
-
-说明：
-- 为 `true` 时优先按 Velocity 网络模式处理
-- 适用于需要跨服连接命令的场景
-
-### 自定义物品回退材质
-```yaml
-settings:
   item-resolver:
-    fallback-material: STONE
+    fallback-material: STONE      # 物品解析失败时的回退材质
+  validate-commands: false        # 命令安全验证开关（默认关闭）
+  velocity-network: true          # Velocity/BungeeCord 代理支持
+
+menu-clock:
+  enabled: true                   # 菜单时钟开关
+  give-on-join: true              # 入服自动给时钟
+  slot: 4                         # 快捷栏位置（0-8）
 ```
 
-当外部物品提供方不可用时，插件会回退到这里指定的原版材质。
+### 多语言系统 (i18n)
 
-### 菜单时钟
+所有玩家可见的文本消息均通过独立的语言文件管理，位于 `plugins/MiaoMenu/lang/` 目录下。首次启动时插件会自动从 JAR 中释放语言文件。
+
+#### 内置语言
+
+| 语言代码 | 语言    | 文件名 |
+|---------|-------|--------|
+| `en-us` | English  | `en-us.yml` |
+| `zh-cn` | 简体中文  | `zh-cn.yml` |
+| `zh-tw` | 繁體中文  | `zh-tw.yml` |
+| `vi-vn` | Tiếng Việt | `vi-vn.yml` |
+| `ja-jp` | 日本語   | `ja-jp.yml` |
+
+#### 切换语言
+
+在 `config.yml` 中修改一行即可：
+
 ```yaml
 settings:
-  menu-clock:
-    enabled: true
-    give-on-join: true
+  lang: "zh-cn"   # 可选: en-us, zh-cn, zh-tw, vi-vn, ja-jp
 ```
 
-说明：
-- `enabled`：是否启用菜单时钟功能
-- `give-on-join`：玩家加入时若没有时钟则自动给予
+#### 自定义与扩展
 
-### 消息系统
-```yaml
-messages:
-  message:
-    no-permission: "&c✦ You do not have permission to use this command."
-    players-only: "&c✦ Only players can use this command."
-    menu-not-found: "&c✦ No menu named &e{0}&c was found. Please check the spelling."
+- **修改文本**：直接编辑 `lang/` 目录下对应的 `.yml` 文件，保存后热重载自动生效
+- **新增语言**：复制任意语言文件并重命名（如 `ko-kr.yml`），将 `config.yml` 中 `lang` 设为 `ko-kr` 即可
+- **颜色代码**：所有文本支持 `&` 颜色格式（`&c` 红色、`&a` 绿色、`&6` 金色等）
+- **缺失回退**：当某条 key 在当前语言文件中不存在时，自动回退至内置英文 `en-us`，再回退至 key 本身
+- **参数占位符**：`{0}`、`{1}` 等为程序运行时替换的动态参数，翻译时必须原样保留
+
+---
+
+## 命令与权限
+
+### 命令
+
+| 命令 | 别名 | 权限 | 说明 |
+|------|------|------|------|
+| `/dgeysermenu open <菜单名>` | `/dgm open` | `dgeysermenu.use` | 打开指定菜单 |
+| `/dgeysermenu reload` | `/dgm reload` | `dgeysermenu.reload` | 重载插件配置 |
+| `/dgeysermenu help` | `/dgm help` | `dgeysermenu.use` | 显示帮助 |
+| `/getmenuclock` | - | `dgeysermenu.admin` | 获取菜单时钟 |
+
+### 权限树
+
+```
+dgeysermenu.*          (所有权限)
+  ├── dgeysermenu.use  (default: true)
+  ├── dgeysermenu.admin (default: op)
+  └── dgeysermenu.reload (default: op)
 ```
 
-说明：
-- 所有可见提示文本尽量统一由 `messages` 节点管理
-- 便于你自行改成中文、英文或服务器风格文案
+---
 
-## Java 菜单配置示例解释
+## 菜单系统
 
-示例文件：`src/main/resources/java_menus/test.yml`
+### 动作前缀
+
+菜单物品的点击命令使用前缀语法：
+
+| 前缀 | 说明 | 示例 |
+|------|------|------|
+| `[player]` | 以玩家身份执行 | `[player] spawn` |
+| `[cmd]` | 以控制台身份执行 | `[cmd] give @s diamond 1` |
+| `[message]` | 发送消息给玩家 | `[message] &a你好！` |
+| `[close]` | 关闭菜单 | `[close]` |
+| `[menu]` | 打开另一个菜单 | `[menu] settings` |
+| 无前缀 | 等同 `[player]` | `spawn` |
+
+---
+
+## 需求条件系统
+
+### 条件类型
+
+| 类型 | 说明 | 示例 |
+|------|------|------|
+| `permission` | 权限检查 | `permission: vip.use` |
+| `placeholder_equals` | 占位符等于 | `placeholder_equals: "%server_online%,1"` |
+| `placeholder_not_equals` | 占位符不等于 | `placeholder_not_equals: "%server_online%,0"` |
+| `placeholder_contains` | 占位符包含 | `placeholder_contains: "%player_world%,world"` |
+| `advancement` | 成就完成 | `advancement: minecraft:story/mine_diamond` |
+| `progress` | 进度百分比 | `progress: minecraft:story/mine_diamond,50` |
+| `score_gte` | 记分板大于等于 | `score_gte: kills,100` |
+| `score_lte` | 记分板小于等于 | `score_lte: deaths,10` |
+| `score_equals` | 记分板等于 | `score_equals: level,50` |
+| `score_range` | 记分板范围 | `score_range: level,10,99` |
+
+### 条件组 (AND / OR)
 
 ```yaml
-menu_title: "&6&lMain Menu &7| &fServer Name"
-rows: 6
-view_requirement:
-  deny_message: "&cYou cannot open this menu yet."
-  fallback_menu: "test"
+conditions:
+  type: and
   requirements:
-    - type: permission
-      permission: dgeysermenu.use
+    - permission: vip.use
+    - type: or
+      requirements:
+        - placeholder_equals: "%server_online%,1"
+        - score_gte: kills,100
+```
+
+### 命名条件块 (requirement_blocks)
+
+```yaml
+requirement_blocks:
+  vip_check:
+    - permission: vip.use
+    - placeholder_gte: "%player_playtime%,3600"
+
 items:
-  server_info:
-    slot: 10
-    material: KNOWLEDGE_BOOK
-    custom_model_data: 0
-    display_name: "&e&lServer Info"
-    lore:
-      - "&7Click to view server information"
-      - "&fOnline Players: &a%server_online%&f/&a%server_max_players%"
-    left_click_commands:
-      - "[message] &6=== Server Info ==="
-      - "[player] list"
-      - "[close]"
+  special:
+    conditions:
+      block: vip_check
 ```
 
-### 这一段代表什么
-- `menu_title`：箱子菜单标题
-- `rows`：菜单行数，只能是 1 到 6
-- `view_requirement`：玩家能否打开整个菜单
-- `deny_message`：不满足要求时发送的提示
-- `fallback_menu`：不满足要求时跳转的替代菜单
-- `slot`：按钮放在哪个格子
-- `material`：按钮材质
-- `custom_model_data`：资源包模型编号
-- `display_name`：按钮标题
-- `lore`：按钮说明
-- `left_click_commands`：左键点击执行的动作列表
+---
 
-### 支持的材质来源
-`test.yml` 中已经写明，`material` 可以来自多种来源：
+## 物品解析器
 
-- 原版材质，如 `PAPER`
-- 原版材质 + `custom_model_data`
-- `craftengine:namespace:item_id`
-- `itemsadder:namespace:item_id`
-- `mmoitems:type:id`
-- `headdb:head_id`
-- `base64head:base64_string`
+MiaoMenu 支持多种自定义物品格式，按优先级依次尝试：
 
-## Java 菜单中的条件系统
+| 格式 | 前缀 | 示例 | 需要插件 |
+|------|------|------|---------|
+| CraftEngine | `ce:` | `ce:custom_sword` | CraftEngine |
+| ItemsAdder | `ia:` | `ia:ruby_sword` | ItemsAdder |
+| MMOItems | `mmoinstance:` | `mmoinstance:SWORD:RUBY_BLADE` | MMOItems |
+| HeadDatabase | `hdb:` | `hdb:12345` | HeadDatabase |
+| Base64 头颅 | `base64:` | `base64:eyJ0ZXh0dXJlcyI6...` | 无 |
+| 原版 | 无前缀 | `DIAMOND_SWORD` | 无 |
 
-### 物品条件示例
-```yaml
-player_info:
-  conditions:
-    operator: AND
-    requirements:
-      - type: placeholder_contains
-        placeholder: "%player_name%"
-        value: ""
-  lock_message: "&cYou do not meet the requirements to view player info yet."
+---
+
+## 热重载
+
+插件使用 `WatchService` 守护线程监听以下文件变更：
+- `config.yml`
+- `java_menus/*.yml`
+- `bedrock_menus/*.yml`
+
+文件变更后 500ms 防抖触发自动重载，无需手动执行命令。也可使用 `/dgm reload` 手动重载。
+
+---
+
+## 架构文档
+
+### 核心模块
+
+```
+MiaoMenu (主类)
+├── ConfigManager          # 配置加载与版本迁移
+├── JavaMenuManager        # Java 版菜单注册表 (volatile ConcurrentHashMap)
+├── BedrockMenuManager     # 基岩版菜单注册表 + Floodgate 反射桥
+├── RequirementService     # 需求条件评估引擎
+├── ActionRegistry         # 动作前缀分发器
+├── ItemResolver           # 多源物品解析器 (反射缓存)
+├── MenuClockManager       # 菜单时钟物品管理
+├── HotReloadManager       # 文件监听热重载 (WatchService 守护线程)
+├── ProxyManager           # BungeeCord/Velocity 代理
+├── RateLimiter            # 交互速率限制器 (滑动窗口)
+└── FoliaFactory           # Folia/Bukkit 调度器适配
 ```
 
-说明：
-- `conditions`：物品级条件判断
-- `operator`：多个条件之间的关系，可为 `AND` 或 `OR`
-- `placeholder_contains`：判断占位符结果是否包含指定值
-- `lock_message`：不满足条件时点击按钮显示的文本
+### 线程模型
 
-### 复杂条件示例
-```yaml
-shop:
-  conditions:
-    operator: AND
-    requirements:
-      - type: advancement
-        advancement: "minecraft:story/root"
-    children:
-      - operator: OR
-        requirements:
-          - type: permission
-            permission: "vip.shop"
-          - type: progress
-            objective: "trade_count"
-            value: 5
+| 组件 | 线程 | 同步策略 |
+|------|------|---------|
+| 菜单注册表 | 主线程 (Bukkit) | `volatile Map` + 全量替换 |
+| 热重载监听 | 守护线程 (WatchService) | `volatile` + 调度回主线程 |
+| 速率限制器 | 主线程 | `ConcurrentHashMap.compute()` |
+| Folia 调度 | 区域线程 | `GlobalRegionScheduler` / `EntityScheduler` |
+
+### Folia 兼容机制
+
+```
+FoliaFactory.isFolia()
+    ├── true  → FoliaSchedulerAdapter (Entity.getScheduler().runDelayed)
+    └── false → BukkitSchedulerAdapter (BukkitScheduler.runTaskLater)
+
+检测方式：Class.forName("io.papermc.paper.threadedregions.RegionizedServer")
 ```
 
-这一示例表示：
-- 玩家必须先完成一个指定进度成就
-- 然后再满足以下任意一个条件：
-  - 拥有 `vip.shop` 权限
-  - 计分板 `trade_count` 至少达到 5
+---
 
-## Bedrock 菜单配置示例解释
+## 开发者指南
 
-示例文件：`src/main/resources/bedrock_menus/test.yml`
+### 项目结构
 
-```yaml
-menu:
-  title: "§6§lMain Menu"
-  subtitle: "§7Welcome to the server!"
-  footer: "§8Server version 1.21.x"
-  items:
-    - text: "§a§lTeleport\n§7Quickly travel to different locations"
-      icon: "textures/items/compass_item"
-      icon_type: "path"
-      command: "warp"
-      execute_as: "player"
-view_requirement:
-  deny_message: "&cYou cannot open the Bedrock main menu right now."
-  fallback_menu: "test"
-  requirements:
-    - type: permission
-      permission: dgeysermenu.use
 ```
-
-### 字段说明
-- `title`：表单标题
-- `subtitle`：副标题
-- `footer`：页脚
-- `items`：按钮列表
-- `text`：按钮显示文本
-- `icon`：图标路径或 URL
-- `icon_type`：图标类型
-- `command`：点击后执行的命令
-- `execute_as`：以玩家或控制台身份执行
-- `view_requirement`：菜单整体访问条件
-
-## 跨服菜单示例
-
-示例文件：`src/main/resources/java_menus/server-selector.yml`
-
-```yaml
-items:
-  lobby:
-    left_click_commands:
-      - "[player] server lobby"
-      - "[message] &aConnecting to lobby..."
-      - "[close]"
-```
-
-这类写法适合：
-- Velocity 网络
-- BungeeCord 风格代理网络
-- 大厅服 / 生存服 / 创造服 / 小游戏服切换入口
-
-## 高级玩法示例
-
-### 1. 打开另一个菜单
-```yaml
-left_click_commands:
-  - "[menu] shop"
-```
-
-### 2. 给玩家发送提示
-```yaml
-left_click_commands:
-  - "[message] &a欢迎使用菜单!"
-```
-
-### 3. 让玩家执行命令
-```yaml
-left_click_commands:
-  - "[player] spawn"
-```
-
-### 4. 让控制台执行命令
-```yaml
-left_click_commands:
-  - "[console] give %player_name% diamond 1"
-```
-
-### 5. 关闭菜单
-```yaml
-left_click_commands:
-  - "[close]"
-```
-
-## 目录结构
-
-```text
 MiaoMenu/
-├─ pic/
-├─ docs/
-├─ src/main/resources/
-│  ├─ config.yml
-│  ├─ plugin.yml
-│  ├─ java_menus/
-│  │  ├─ test.yml
-│  │  └─ server-selector.yml
-│  └─ bedrock_menus/
-│     └─ test.yml
+├── src/main/java/com/fluxcraft/MiaoMenu/
+│   ├── MiaoMenu.java              # 主类 (生命周期管理)
+│   ├── javamenu/                  # Java 版菜单系统
+│   │   ├── JavaMenu.java          # 菜单模型 + InventoryHolder
+│   │   ├── JavaMenuManager.java   # 菜单注册表
+│   │   └── JavaMenuListener.java  # 点击/拖拽事件处理
+│   ├── bedrockmenu/               # 基岩版菜单系统
+│   │   ├── BedrockMenu.java       # Cumulus 表单构建
+│   │   └── BedrockMenuManager.java # 表单注册 + 反射桥
+│   ├── menu/
+│   │   ├── action/                # 动作系统
+│   │   │   ├── ActionRegistry.java
+│   │   │   └── impl/              # player/cmd/message/close/menu
+│   │   └── requirement/           # 需求条件系统
+│   │       ├── RequirementService.java
+│   │       ├── ConditionGroup.java
+│   │       └── RequirementResult.java
+│   ├── managers/                  # 管理器
+│   │   ├── HotReloadManager.java
+│   │   ├── MenuClockManager.java
+│   │   └── SoundsClock.java
+│   ├── integration/               # 第三方集成
+│   │   └── ItemResolver.java
+│   ├── foliacall/                 # Folia 适配层
+│   │   ├── FoliaAdapter.java
+│   │   └── FoliaFactory.java
+│   ├── security/                  # 安全
+│   │   ├── RateLimiter.java
+│   │   └── InputValidator.java
+│   ├── listeners/                 # 事件监听器
+│   ├── commands/                  # 命令系统
+│   ├── proxy/                     # 代理跨服
+│   ├── config/                    # 配置管理
+│   ├── constants/                 # 常量
+│   └── utils/                     # 工具类
+├── src/main/resources/
+│   ├── plugin.yml
+│   ├── config.yml
+│   ├── lang/                      # 多语言文件（en-us, zh-cn, zh-tw, vi-vn, ja-jp）
+│   ├── java_menus/                # Java 版示例菜单
+│   └── bedrock_menus/             # 基岩版示例菜单
+├── src/test/java/                 # 单元测试
+├── .github/workflows/ci.yml       # CI 流水线
+└── pom.xml                        # Maven 构建配置
 ```
 
-## 构建方法
+### 构建方式
+
+```bash
+# 编译
+mvn clean compile
+
+# 运行测试
+mvn test
+
+# 打包 (含 shade)
+mvn package
+
+# 完整验证
+mvn verify
+```
+
+### 测试
 
 ```bash
 mvn test
-mvn package
+# 26 个单元测试覆盖：
+#   - RequirementServiceTest (15 个)
+#   - RateLimiterTest (5 个)
+#   - ProxyManagerTest (4 个)
+#   - InputValidatorTest (2 个)
 ```
 
-默认产物会生成在 `target/` 目录下。
+---
 
-## 常见问题
+## CI/CD 流水线
 
-### 1. 菜单打不开
-请依次检查：
-- 玩家是否拥有 `dgeysermenu.use`
-- 菜单文件名与命令中的菜单名是否一致
-- YAML 缩进是否正确
-- `view_requirement` 是否拒绝了当前玩家
+### GitHub Actions 配置
 
-### 2. 基岩菜单没有显示
-请检查：
-- Floodgate 是否正确安装
-- 玩家是否确实通过 Floodgate 接入
-- `bedrock_menus/` 是否存在对应菜单
+```yaml
+触发条件: push/PR 到 main/master/dev 分支
+权限模型: contents: read (最小权限)
+并发控制: cancel-in-progress: true
+构建步骤: mvn -B verify (测试+打包一步完成)
+产物上传: target/*.jar → Actions Artifact
+依赖缓存: maven cache enabled
+```
 
-### 3. 按钮点击后没有效果
-请检查：
-- `command` 或点击动作是否写错
-- 玩家本身是否有执行目标命令的权限
-- 控制台是否报错
+### Dependabot
 
-### 4. 占位符没有替换
-请检查：
-- PlaceholderAPI 是否已安装
-- 使用的占位符是否来自已安装扩展
-- 写法是否正确
+- Maven 依赖：每周检查更新
+- GitHub Actions：每周检查更新
+- 最大同时打开 PR：5
 
-### 5. 跨服命令无效
-请检查：
-- 代理环境是否正确工作
-- `velocity-network` 配置是否符合你的网络架构
-- 代理转发与信道是否可用
+---
 
-## 适用场景
+## 性能优化记录
 
-MiaoMenu 适合以下服务器：
+以下优化已全部应用并通过测试验证：
 
-- 同时服务 Java 与 Bedrock 玩家
-- 需要主菜单、功能导航、服务器选择器
-- 希望使用 YAML 快速配置菜单
-- 希望结合 PlaceholderAPI 展示动态数据
-- 希望以低维护成本实现条件菜单系统
+### 反射缓存
 
-## License
+| 组件 | 优化前 | 优化后 |
+|------|--------|--------|
+| Floodgate API | 每次调用 `getMethod()` | 缓存 `Method` 为 `volatile` 字段 |
+| Cumulus Form | 每次构建表单 `Class.forName()` | 静态初始化缓存 Class + 枚举常量 |
+| CraftEngine/ItemsAdder/MMOItems/HeadDB | 每次解析 `Class.forName()` | 静态懒加载缓存 Class |
 
-本项目使用 `LICENSE` 文件中声明的许可证。
+### 热路径优化
+
+| 组件 | 优化前 | 优化后 |
+|------|--------|--------|
+| PlaceholderUtils | 每次 `PluginManager.isPluginEnabled()` | 缓存 `volatile boolean` |
+| MiaoMenu.isBedrockPlayer | 每次 `PluginManager.getPlugin()` | `onEnable` 时缓存 `volatile boolean` |
+| JavaMenu.createUnlockedItemStack | 无条件 `Material.matchMaterial()` | 延迟到 else 分支 |
+| Lang.get() | 完整序列化/反序列化往返 | 使用缓存的 `static final` 序列化器 |
+| PlayerAction | `String.split("\\s+")` 每次编译正则 | 预编译 `static final Pattern` |
+
+### 内存优化
+
+| 组件 | 优化前 | 优化后 |
+|------|--------|--------|
+| HotReloadManager | `lastMenuReloadTimes` 无界增长 | `LinkedHashMap` 限制 32 条目 |
+
+### 线程安全
+
+| 组件 | 优化前 | 优化后 |
+|------|--------|--------|
+| ItemResolver 缓存 Class | 非 `volatile` | 全部 `volatile` |
+| BedrockMenu 缓存 Class | 非 `volatile` | 全部 `volatile` |
+| MiaoMenu Floodgate 字段 | 非 `volatile` | 全部 `volatile` |
+
+---
+
+## 变更日志
+
+### v3.0 (Paper 26.2)
+
+- **BREAKING**: 升级 Paper API 至 26.2.build.60-beta
+- **BREAKING**: Java 版本要求提升至 25
+- **BREAKING**: `api-version` 更新为 `'26.2'`
+- 移除未使用的 `folia-api` 依赖
+- 升级 FoliaLib 至 1.3.2
+- 升级 Mockito 至 5.18.0 (Java 25 支持)
+- 全面性能优化：反射缓存、热路径优化、内存修复
+- 修复基岩版 requirement_blocks 条件丢失 Bug
+- 修复 Folia 死亡掉落菜单时钟缺失 Bug
+- i18n 合规：所有硬编码中文提取为语言条目
+- **多语言系统**：内置 5 种语言文件（en-us / zh-cn / zh-tw / vi-vn / ja-jp），通过 `config.yml` 的 `settings.lang` 切换，支持热重载和缺失回退
+- CI/CD 完善：最小权限、产物上传、并发控制、Dependabot

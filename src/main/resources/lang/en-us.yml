@@ -1,0 +1,86 @@
+# MiaoMenu Language File | English (United States)
+# Supports & color codes (e.g. &c &a &6 &7 &8 &e)
+
+default-item-name: "&6Chronolens &7(Right-click to open menu)"
+
+message:
+  no-permission: "&c✦ Nice try, but you're not cleared for that."
+  players-only: "&c✦ You gotta be in the game to call that shot."
+  menu-not-found: "&c✦ No menu called &e{0}&c rings a bell. Double-check the spelling?"
+  requirement-denied: "&c✦ Not quite there yet — you're missing the prerequisites."
+  item-locked: "&c✦ Still under wraps. Come back when you've leveled up."
+  item-locked-suffix: " &8[Locked]"
+  bedrock-locked-prefix: " &8[Locked] &7"
+  config-updated: "&e✦ Heads up — your config was outdated, so we brought it up to speed."
+  reloaded: "&a✦ Reloaded and raring to go!"
+  io-error: "&c✦ Hit a wall reading the disk. Check your file permissions."
+  usage-open: "&c✦ Here's the drill: /dgm open <menu-name>"
+  help:
+    header: "&6✿ &eHey there, wanderer &6✿"
+    usage: "&7✎ Hover for the lowdown, click to pull the trigger"
+
+descriptions:
+  open: "&a✦ Crack open a specific menu"
+  reload: "&c✦ Give the config a fresh coat of paint"
+  help: "&e✦ Your trusty cheat sheet"
+
+command:
+  unknown: "&c✦ That command fell on deaf ears. Try /dgm help to get your bearings."
+  main-alias: "dgm"
+
+open:
+  error: "&c✦ The menu balked. Check the console for the nitty-gritty."
+
+menu:
+  clock:
+    name: "&6Chronolens &7(Right-click to open menu)"
+    given: "&a✦ You've got the Chronolens! Right-click to jump straight into the menu!"
+
+hot-reload:
+  initialized: "✦ Hot-reload is up and running."
+  detected: "✦ Picked up a change in {0}. Shuffling menus..."
+
+log:
+  plugin:
+    enabled: "MiaoMenu v{0} Enabled."
+    enable-failed: "Fatal error occurred while enabling MiaoMenu. Disabling plugin."
+  config:
+    backup-delete-failed: "Couldn't toss the old backup file {0}."
+    backup-create-failed: "Couldn't stash a backup of {0}; forging ahead with the overwrite."
+    menu-refresh-failed: "Fell short trying to refresh the sample menu files."
+  command:
+    register-failed: "No dice registering command '{0}'. Give your plugin.yml a once-over."
+    descriptions-missing: "The 'descriptions' section seems to have gone AWOL from the language file."
+    execute-failed: "Command '{0}' tripped up for sender '{1}'."
+  action:
+    dispatch-failed: "Action '{0}' went sideways for player '{1}'."
+    unsafe-content: "Caught red-handed: blocked shady command content '{0}' from player '{1}'."
+  hot-reload:
+    initialize-failed: "Couldn't get HotReloadManager off the ground. Auto-reload is kaput."
+    loop-failed: "The HotReloadManager watchdog hit a snag."
+  floodgate:
+    player-check-failed: "Couldn't tell if player {0} is rocking Floodgate."
+  bstats:
+    initialize-failed: "BStats refused to start."
+  proxy:
+    detected: "Proxy in the house: {0} — cross-server commands are live."
+    velocity-forwarding-required: "Velocity mode: make sure BungeeCord plugin messaging is switched on."
+    disabled: "No proxy in sight — cross-server commands are off the table."
+    not-detected: "No proxy detected. Can't beam commands across servers."
+    send-failed: "Cross-server command fell through. Target server: {0}"
+    channel-not-registered: "Channel {0} hasn't been registered yet."
+    message-create-failed: "Couldn't cook up a cross-server message. Target server: {0}"
+    message-received: "Got a BungeeCord message: {0}"
+    response-handle-failed: "Dropped the ball handling the BungeeCord response."
+  java-menu:
+    directory-create-failed: "Couldn't carve out the java_menus directory."
+    load-failed: "Couldn't load menu: {0}"
+    open-failed: "Something went sideways opening menu {0}"
+  bedrock-menu:
+    directory-create-failed: "Couldn't carve out the bedrock_menus directory. Give the file permissions a look."
+    load-failed: "Couldn't load Bedrock menu: {0}"
+    send-failed: "Couldn't get form '{0}' to Bedrock player {1}."
+    form-build-returned-null: "Form for Bedrock player {0} came back empty-handed."
+    form-build-failed: "Bedrock form build hit a dead end."
+    reflection-send-failed: "Couldn't push the Floodgate form for menu '{0}' to player {1}."
+    reflection-setup-failed: "Couldn't wire up Floodgate/Cumulus reflection."

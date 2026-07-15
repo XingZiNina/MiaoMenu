@@ -12,7 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
@@ -43,16 +42,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     @NotNull
     private Map<String, String> loadHelpDescriptions() {
-        Map<String, String> descriptions = new LinkedHashMap<>();
-        ConfigurationSection section = plugin.getConfig().getConfigurationSection("messages.descriptions");
-        if (section == null) {
+        Map<String, String> descriptions = Lang.getStringSection("descriptions");
+        if (descriptions.isEmpty()) {
             plugin.getLogger().warning(Lang.get("log.command.descriptions-missing"));
-            return descriptions;
-        }
-        for (String key : section.getKeys(false)) {
-            if (section.isString(key)) {
-                descriptions.put(key, section.getString(key));
-            }
         }
         return descriptions;
     }

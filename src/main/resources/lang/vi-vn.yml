@@ -1,0 +1,86 @@
+# MiaoMenu Tệp Ngôn Ngữ | Tiếng Việt
+# Hỗ trợ mã màu & (ví dụ: &c &a &6 &7 &8 &e)
+
+default-item-name: "&6Gương Thời Gian &7(Nhấp chuột phải để mở menu)"
+
+message:
+  no-permission: "&c✦ Lắm léo cũng không xong — bạn không đủ quyền hạn để dùng lệnh này."
+  players-only: "&c✦ Nói suông thì không ai nghe — hãy vào game rồi mới dùng được (chỉ người chơi)."
+  menu-not-found: "&c✦ Mò mẫm mãi không thấy — không có menu nào tên &e{0}&c. Kiểm tra lại chính tả xem?"
+  requirement-denied: "&c✦ Còn thiếu điều kiện, chưa tới lượt — thao tác này tạm thời không khả dụng."
+  item-locked: "&c✦ Cửa này chưa mở — quay lại sau khi đủ điều kiện nhé."
+  item-locked-suffix: " &8[Chưa mở khóa]"
+  bedrock-locked-prefix: " &8[Chưa mở khóa] &7"
+  config-updated: "&e✦ Cấu hình cũ rích rồi — đã tự động cập nhật lại từ đầu cho bạn."
+  reloaded: "&a✦ Nạp lại xong xuôi, mọi thứ sẵn sàng để khởi động!"
+  io-error: "&c✦ Đọc ghi bị nghẽn (lỗi I/O) — bạn thử kiểm tra lại quyền truy cập tệp xem."
+  usage-open: "&c✦ Cú pháp đúng phải thế này: /dgm open <tên-menu>"
+  help:
+    header: "&6✿ &eChào bạn, nhà du hành &6✿"
+    usage: "&7✎ Rê chuột để xem chi tiết, bấm vào là chạy luôn"
+
+descriptions:
+  open: "&a✦ Mở một menu chỉ định"
+  reload: "&c✦ Khởi động lại cấu hình chính"
+  help: "&e✦ Tra cứu hướng dẫn sử dụng"
+
+command:
+  unknown: "&c✦ Lệnh này không có trong từ điển — gõ /dgm help để xem các lệnh có sẵn."
+  main-alias: "dgm"
+
+open:
+  error: "&c✦ Menu mở không ra — xem log ở console để biết lỗi gì."
+
+menu:
+  clock:
+    name: "&6Gương Thời Gian &7(Nhấp chuột phải để mở menu)"
+    given: "&a✦ Bạn đã nhận được Gương Thời Gian! Nhấp chuột phải là mở menu luôn!"
+
+hot-reload:
+  initialized: "✦ Nạp lại tự động đã sẵn sàng, đang canh chừng tệp cho bạn."
+  detected: "✦ Phát hiện {0} có thay đổi — đang nạp lại menu..."
+
+log:
+  plugin:
+    enabled: "MiaoMenu v{0} đã khởi động."
+    enable-failed: "MiaoMenu gặp lỗi nghiêm trọng khi khởi động, plugin sẽ tạm dừng."
+  config:
+    backup-delete-failed: "Tệp sao lưu cũ {0} xoá không được, cứ để đó vậy."
+    backup-create-failed: "Sao lưu {0} thất bại — đành ghi đè luôn."
+    menu-refresh-failed: "Làm mới tệp menu mẫu gặp trục trặc."
+  command:
+    register-failed: "Đăng ký lệnh '{0}' không thành công — xem lại plugin.yml đi."
+    descriptions-missing: "Không tìm thấy phần 'descriptions' trong tệp ngôn ngữ."
+    execute-failed: "Lệnh '{0}' bị vấp khi '{1}' thực hiện."
+  action:
+    dispatch-failed: "Hành động '{0}' thực hiện cho người chơi '{1}' bị lỗi."
+    unsafe-content: "Bắt quả tang — đã chặn nội dung lệnh đáng ngờ '{0}' từ người chơi '{1}'."
+  hot-reload:
+    initialize-failed: "Không nổ máy được trình nạp lại tự động — tính năng này sẽ tắt."
+    loop-failed: "Vòng lặp canh chừng của trình nạp lại tự động bị gián đoạn."
+  floodgate:
+    player-check-failed: "Không xác định được người chơi {0} có phải Floodgate hay không."
+  bstats:
+    initialize-failed: "BStats khởi động không được."
+  proxy:
+    detected: "Phát hiện proxy {0} — lệnh liên máy chủ đã được kích hoạt."
+    velocity-forwarding-required: "Chế độ Velocity: nhớ bật BungeeCord plugin messaging lên nhé."
+    disabled: "Không thấy proxy đâu — lệnh liên máy chủ tạm đóng."
+    not-detected: "Không phát hiện proxy, không thể gửi lệnh liên máy chủ."
+    send-failed: "Gửi lệnh liên máy chủ thất bại — máy chủ đích: {0}"
+    channel-not-registered: "Kênh {0} chưa đăng ký."
+    message-create-failed: "Không tạo được tin nhắn liên máy chủ — máy chủ đích: {0}"
+    message-received: "Nhận được tin nhắn BungeeCord: {0}"
+    response-handle-failed: "Xử lý phản hồi BungeeCord gặp sự cố."
+  java-menu:
+    directory-create-failed: "Không tạo được thư mục java_menus."
+    load-failed: "Nạp menu {0} thất bại."
+    open-failed: "Lỗi khi mở menu {0}"
+  bedrock-menu:
+    directory-create-failed: "Không tạo được thư mục bedrock_menus — kiểm tra quyền tệp giúp."
+    load-failed: "Nạp menu Bedrock {0} thất bại."
+    send-failed: "Không gửi được form '{0}' cho người chơi Bedrock {1}."
+    form-build-returned-null: "Form cho người chơi Bedrock {0} xây xong lại rỗng tuếch."
+    form-build-failed: "Xây form Bedrock đi vào ngõ cụt."
+    reflection-send-failed: "Gửi form Floodgate cho menu '{0}' đến người chơi {1} thất bại."
+    reflection-setup-failed: "Thiết lập cầu nối reflection Floodgate/Cumulus thất bại."

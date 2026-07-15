@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,6 +19,31 @@ import com.fluxcraft.MiaoMenu.utils.Lang;
 import com.fluxcraft.MiaoMenu.utils.PlaceholderUtils;
 
 public class BedrockMenu {
+    private static final Pattern STRIP_COLOR = Pattern.compile("§[0-9a-fk-or]");
+
+    // Cached Cumulus reflection metadata (initialized lazily)
+    private static volatile boolean cumulusInitialized = false;
+    private static volatile Class<?> cumulusSimpleFormClass;
+    private static volatile Class<?> cumulusFormImageClass;
+    private static volatile Object cumulusPathType;
+    private static volatile Object cumulusUrlType;
+
+    private static void initCumulusReflection() {
+        if (cumulusInitialized) return;
+        cumulusInitialized = true;
+        try {
+            cumulusSimpleFormClass = Class.forName("org.geysermc.cumulus.form.SimpleForm");
+            cumulusFormImageClass = Class.forName("org.geysermc.cumulus.util.FormImage");
+            Class<?> typeEnum = Class.forName("org.geysermc.cumulus.util.FormImage$Type");
+            for (Object constant : typeEnum.getEnumConstants()) {
+                if ("PATH".equals(constant.toString())) cumulusPathType = constant;
+                if ("URL".equals(constant.toString())) cumulusUrlType = constant;
+            }
+        } catch (ClassNotFoundException ignored) {
+            // Cumulus not available
+        }
+    }
+
     private static class ConfigKeys {
         public static final String MENU_ITEMS = "menu.items";
         public static final String MENU_TITLE = "menu.title";
@@ -103,10 +129,12 @@ public class BedrockMenu {
     }
 
     public Object buildForm(Player player) {
+        initCumulusReflection();
+        if (cumulusSimpleFormClass == null) {
+            return null;
+        }
         try {
-            Class<?> simpleFormClass = Class.forName("org.geysermc.cumulus.form.SimpleForm");
-            Class<?> formImageClass = Class.forName("org.geysermc.cumulus.util.FormImage");
-            Object builder = simpleFormClass.getMethod("builder").invoke(null);
+            Object builder = cumulusSimpleFormClass.getMethod("builder").invoke(null);
             String title = PlaceholderUtils.parse(player, getMenuTitle(), plugin);
             builder.getClass().getMethod("title", String.class).invoke(builder, title);
             builder.getClass().getMethod("content", String.class).invoke(builder, "");
@@ -115,12 +143,12 @@ public class BedrockMenu {
                 String buttonText;
                 if (locked) {
                     String originalText = PlaceholderUtils.parse(player, item.text(), plugin);
-                    buttonText = "§8[未解锁] §7" + originalText.replaceAll("§[0-9a-fk-or]", "");
+                    buttonText = Lang.get("message.bedrock-locked-prefix") + STRIP_COLOR.matcher(originalText).replaceAll("");
                 } else {
                     buttonText = PlaceholderUtils.parse(player, item.text(), plugin);
                 }
                 if (!locked && item.hasIcon()) {
-                    addIconButton(builder, formImageClass, buttonText, item);
+                    addIconButton(builder, cumulusFormImageClass, buttonText, item);
                 } else {
                     builder.getClass().getMethod("button", String.class).invoke(builder, buttonText);
                 }
@@ -141,25 +169,11 @@ public class BedrockMenu {
     }
 
     private Object parseImageType(String typeString) {
-        try {
-            Class<?> typeEnum = Class.forName("org.geysermc.cumulus.util.FormImage$Type");
-            Object[] constants = typeEnum.getEnumConstants();
-            if (ConfigKeys.ICON_TYPE_URL.equalsIgnoreCase(typeString)) {
-                for (Object constant : constants) {
-                    if (constant.toString().equals("URL")) {
-                        return constant;
-                    }
-                }
-            }
-            for (Object constant : constants) {
-                if (constant.toString().equals("PATH")) {
-                    return constant;
-                }
-            }
-            return constants[0];
-        } catch (ClassNotFoundException e) {
-            return null;
+        initCumulusReflection();
+        if (cumulusUrlType != null && ConfigKeys.ICON_TYPE_URL.equalsIgnoreCase(typeString)) {
+            return cumulusUrlType;
         }
+        return cumulusPathType;
     }
 
     public RequirementResult checkViewRequirement(Player player) {
@@ -172,6 +186,10 @@ public class BedrockMenu {
 
     public String getName() {
         return name;
+    }
+
+    public Map<String, RequirementBlock> getRequirementBlocks() {
+        return requirementBlocks;
     }
 
     public record BedrockMenuItem(

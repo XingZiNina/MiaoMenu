@@ -32,7 +32,7 @@ public class HelpCommand implements PluginCommand {
             Component cmdComponent = Component.text(cmdName)
                     .color(NamedTextColor.YELLOW)
                     .decorate(TextDecoration.BOLD)
-                    .clickEvent(ClickEvent.suggestCommand("/dgm " + cmdName))
+                    .clickEvent(ClickEvent.suggestCommand("/" + Lang.get("command.main-alias") + " " + cmdName))
                     .hoverEvent(Component.text(descRaw).asHoverEvent());
             Component descComponent = LEGACY_SERIALIZER.deserialize(descRaw);
             sender.sendMessage(

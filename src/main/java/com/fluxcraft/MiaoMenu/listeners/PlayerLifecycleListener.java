@@ -9,6 +9,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerLifecycleListener implements Listener {
@@ -28,6 +30,15 @@ public class PlayerLifecycleListener implements Listener {
                 }
             }, MiaoMenu.JOIN_DELAY_TICKS);
         }
+    }
+    // 玩家离线后立刻回收限流窗口，避免离线玩家记录常驻内存
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onQuit(PlayerQuitEvent event) {
+        plugin.getInteractionRateLimiter().clear(event.getPlayer().getUniqueId());
+    }
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onKick(PlayerKickEvent event) {
+        plugin.getInteractionRateLimiter().clear(event.getPlayer().getUniqueId());
     }
     @EventHandler(priority = EventPriority.HIGH)
     public void onDeath(PlayerDeathEvent event) {

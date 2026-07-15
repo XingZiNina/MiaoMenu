@@ -9,12 +9,13 @@ public class SoundsClock {
         this.plugin = plugin;
     }
     public void playMenuOpenSound(Player player) {
-        if (!plugin.getConfig().getBoolean("settings.open-menu-sound.enabled", false)) {
+        var config = plugin.getConfig();
+        if (!config.getBoolean("settings.open-menu-sound.enabled", false)) {
             return;
         }
-        String soundName = plugin.getConfig().getString("settings.open-menu-sound.sound", "entity.experience_orb.pickup");
-        float volume = (float) plugin.getConfig().getDouble("settings.open-menu-sound.volume", 1.0);
-        float pitch = (float) plugin.getConfig().getDouble("settings.open-menu-sound.pitch", 1.0);
-        player.getScheduler().run(plugin, task -> player.playSound(player.getLocation(), soundName, org.bukkit.SoundCategory.MASTER, volume, pitch), null);
+        String soundName = config.getString("settings.open-menu-sound.sound", "entity.experience_orb.pickup");
+        float volume = (float) config.getDouble("settings.open-menu-sound.volume", 1.0);
+        float pitch = (float) config.getDouble("settings.open-menu-sound.pitch", 1.0);
+        player.getScheduler().run(plugin, _ -> player.playSound(player.getLocation(), soundName, org.bukkit.SoundCategory.MASTER, volume, pitch), null);
     }
 }

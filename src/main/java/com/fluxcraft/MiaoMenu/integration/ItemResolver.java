@@ -12,10 +12,18 @@ import com.fluxcraft.MiaoMenu.MiaoMenu;
 public class ItemResolver {
     private final MiaoMenu plugin;
     private final Material fallbackMaterial;
-    private Boolean craftEngineAvailable;
-    private Boolean itemsAdderAvailable;
-    private Boolean mmoItemsAvailable;
-    private Boolean headDatabaseAvailable;
+    private volatile Boolean craftEngineAvailable;
+    private volatile Boolean itemsAdderAvailable;
+    private volatile Boolean mmoItemsAvailable;
+    private volatile Boolean headDatabaseAvailable;
+
+    // Cached reflection classes (initialized lazily)
+    private static volatile boolean ceClassesInit = false;
+    private static volatile Class<?> ceKeyClass;
+    private static volatile Class<?> ceItemsClass;
+    private static volatile Class<?> iaCustomStackClass;
+    private static volatile Class<?> mmoItemsClass;
+    private static volatile Class<?> headDbMainClass;
 
     public ItemResolver(MiaoMenu plugin, Material fallbackMaterial) {
         this.plugin = plugin;
@@ -76,10 +84,9 @@ public class ItemResolver {
             return null;
         }
         try {
-            var keyClass = Class.forName("net.momirealms.craftengine.core.util.Key");
-            Object key = keyClass.getMethod("of", String.class).invoke(null, id);
-            var itemsClass = Class.forName("net.momirealms.craftengine.bukkit.api.CraftEngineItems");
-            Object customItem = invokeById(itemsClass, keyClass, key);
+            initCraftEngineClasses();
+            Object key = ceKeyClass.getMethod("of", String.class).invoke(null, id);
+            Object customItem = invokeById(ceItemsClass, ceKeyClass, key);
             if (customItem != null) {
                 return (ItemStack) customItem.getClass().getMethod("buildItemStack").invoke(customItem);
             }
@@ -87,6 +94,13 @@ public class ItemResolver {
             plugin.getLogger().fine("CraftEngine item not found: " + id);
         }
         return null;
+    }
+
+    private static void initCraftEngineClasses() throws ClassNotFoundException {
+        if (ceClassesInit) return;
+        ceClassesInit = true;
+        ceKeyClass = Class.forName("net.momirealms.craftengine.core.util.Key");
+        ceItemsClass = Class.forName("net.momirealms.craftengine.bukkit.api.CraftEngineItems");
     }
 
     private static Object invokeById(Class<?> itemsClass, Class<?> keyClass, Object key) throws ReflectiveOperationException {
@@ -98,7 +112,10 @@ public class ItemResolver {
             return null;
         }
         try {
-            var customStack = Class.forName("dev.lone.itemsadder.api.CustomStack")
+            if (iaCustomStackClass == null) {
+                iaCustomStackClass = Class.forName("dev.lone.itemsadder.api.CustomStack");
+            }
+            var customStack = iaCustomStackClass
                     .getMethod("getInstance", String.class).invoke(null, id);
             if (customStack != null) {
                 return (ItemStack) customStack.getClass().getMethod("getItemStack").invoke(customStack);
@@ -117,7 +134,9 @@ public class ItemResolver {
             String[] parts = id.split(":", 2);
             if (parts.length != 2) return null;
             var pluginObj = org.bukkit.Bukkit.getPluginManager().getPlugin("MMOItems");
-            var mmoItemsClass = Class.forName("net.Indyuce.mmoitems.MMOItems");
+            if (mmoItemsClass == null) {
+                mmoItemsClass = Class.forName("net.Indyuce.mmoitems.MMOItems");
+            }
             var getItemMethod = mmoItemsClass.getMethod("getItem", String.class, String.class);
             Object itemStack = getItemMethod.invoke(pluginObj, parts[0], parts[1]);
             return (ItemStack) itemStack;
@@ -132,8 +151,10 @@ public class ItemResolver {
             return null;
         }
         try {
-            var apiClass = Class.forName("com.arcaniax.headdatabase.Main");
-            var apiMethod = apiClass.getMethod("getHead", String.class);
+            if (headDbMainClass == null) {
+                headDbMainClass = Class.forName("com.arcaniax.headdatabase.Main");
+            }
+            var apiMethod = headDbMainClass.getMethod("getHead", String.class);
             var pluginObj = org.bukkit.Bukkit.getPluginManager().getPlugin("HeadDatabase");
             return (ItemStack) apiMethod.invoke(pluginObj, id);
         } catch (Exception e) {

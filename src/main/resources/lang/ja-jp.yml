@@ -1,0 +1,86 @@
+# MiaoMenu 言語ファイル | 日本語
+# & カラーコード対応（例: &c &a &6 &7 &8 &e）
+
+default-item-name: "&6時の鏡 &7(右クリックでメニューを開く)"
+
+message:
+  no-permission: "&c✦ 出過ぎた真似は禁物——このコマンドを使う権限がありません。"
+  players-only: "&c✦ 紙の上の兵法は所詮空論——ゲーム内で試してください（プレイヤー専用）。"
+  menu-not-found: "&c✦ 探しても探しても見当たらない——&e{0}&c というメニューは存在しません。スペルを確認してください。"
+  requirement-denied: "&c✦ 時機尚早——条件が足りていないため、この操作は実行できません。"
+  item-locked: "&c✦ まだ封印中——条件を満たせば解放されます。"
+  item-locked-suffix: " &8[未解放]"
+  bedrock-locked-prefix: " &8[未解放] &7"
+  config-updated: "&e✦ 古き設定を検知——古いものを取り払い、自動で最新化しました。"
+  reloaded: "&a✦ 再読込完了——万事-ready、いつでもいけます！"
+  io-error: "&c✦ 読み書きの通り道が塞がれているようです（I/O エラー）。ファイル権限を確認してください。"
+  usage-open: "&c✦ 正しい呪文の詠唱方：/dgm open <メニュー名>"
+  help:
+    header: "&6✿ &eようこそ、旅人よ &6✿"
+    usage: "&7✎ カーソルを合わせて詳細を確認、クリックで即実行"
+
+descriptions:
+  open: "&a✦ 指定したメニューを開く"
+  reload: "&c✦ コア設定を再読み込みする"
+  help: "&e✦ 導きの書をひも解く"
+
+command:
+  unknown: "&c✦ その呪文に心当たりがない——/dgm help で使えるコマンドを確認してください。"
+  main-alias: "dgm"
+
+open:
+  error: "&c✦ メニューが開かない——コンソールログで原因を探ってください。"
+
+menu:
+  clock:
+    name: "&6時の鏡 &7(右クリックでメニューを開く)"
+    given: "&a✦ 時の鏡を手に入れた！右クリックでメニューが一足飛びに開ける！"
+
+hot-reload:
+  initialized: "✦ ホットリロード始動——ファイルの番人につきました。"
+  detected: "✦ {0} に変化を検知——メニューを再構築中..."
+
+log:
+  plugin:
+    enabled: "MiaoMenu v{0} が有効になりました。"
+    enable-failed: "MiaoMenu の有効化中に致命的なエラーが発生しました。プラグインを無効化します。"
+  config:
+    backup-delete-failed: "古いバックアップファイル {0} が消えない——居座っています。"
+    backup-create-failed: "{0} のバックアップに失敗——そのまま上書きします。"
+    menu-refresh-failed: "サンプルメニューファイルの更新につまずきました。"
+  command:
+    register-failed: "コマンド '{0}' の登録に失敗——plugin.yml を確認してみてください。"
+    descriptions-missing: "言語ファイルに 'descriptions' セクションが見当たりません。"
+    execute-failed: "コマンド '{0}' が '{1}' の実行時に躓きました。"
+  action:
+    dispatch-failed: "アクション '{0}' をプレイヤー '{1}' に対して実行できませんでした。"
+    unsafe-content: "見事に捕捉——プレイヤー '{1}' の不審なコマンド内容 {0} をブロックしました。"
+  hot-reload:
+    initialize-failed: "ホットリロードのエンジンがかからない——自動リロードは無効になります。"
+    loop-failed: "ホットリロードの監視ループが道に迷いました。"
+  floodgate:
+    player-check-failed: "プレイヤー {0} が Floodgate 経由かどうか判別できませんでした。"
+  bstats:
+    initialize-failed: "BStats の初期化に失敗しました。"
+  proxy:
+    detected: "プロキシ {0} を検知——クロスサーバーコマンドが有効になりました。"
+    velocity-forwarding-required: "Velocity モード：BungeeCord プラグインメッセージングが有効になっているか確認してください。"
+    disabled: "プロキシの影も形もない——クロスサーバーコマンドは休止中です。"
+    not-detected: "プロキシが検知できません。クロスサーバーコマンドを送信できません。"
+    send-failed: "クロスサーバーコマンドが届かなかった——対象サーバー：{0}"
+    channel-not-registered: "チャンネル {0} はまだ登録されていません。"
+    message-create-failed: "クロスサーバーメッセージを作れなかった——対象サーバー：{0}"
+    message-received: "BungeeCord から通信を受信：{0}"
+    response-handle-failed: "BungeeCord の返答を処理しきれませんでした。"
+  java-menu:
+    directory-create-failed: "java_menus ディレクトリを作れませんでした。"
+    load-failed: "メニュー {0} の読み込みに失敗しました。"
+    open-failed: "メニュー {0} を開く際にエラーが発生しました。"
+  bedrock-menu:
+    directory-create-failed: "bedrock_menus ディレクトリを作れませんでした——ファイル権限を確認してください。"
+    load-failed: "Bedrock 版メニュー {0} の読み込みに失敗しました。"
+    send-failed: "フォーム '{0}' を Bedrock プレイヤー {1} に送れませんでした。"
+    form-build-returned-null: "Bedrock プレイヤー {0} のフォームを組み立てたのに空っぽでした。"
+    form-build-failed: "Bedrock フォームの組み立てが行き詰まりました。"
+    reflection-send-failed: "メニュー '{0}' の Floodgate フォームをプレイヤー {1} に送るのに失敗しました。"
+    reflection-setup-failed: "Floodgate/Cumulus のリフレクション橋を架けるのに失敗しました。"

@@ -115,6 +115,7 @@ public class HotReloadManager {
         lastConfigReloadTime = currentTime;
         scheduleReload(() -> {
             plugin.getConfigManager().loadConfig();
+            Lang.reload();
             plugin.getConfigManager().checkAndRefreshMenus();
             plugin.getJavaMenuManager().loadAllMenus();
             plugin.getBedrockMenuManager().loadAllMenus();
@@ -139,7 +140,7 @@ public class HotReloadManager {
 
     private void scheduleReload(Runnable task) {
         if (FoliaFactory.isFolia()) {
-            Bukkit.getGlobalRegionScheduler().runDelayed(plugin, scheduledTask -> task.run(), 10L);
+            Bukkit.getGlobalRegionScheduler().runDelayed(plugin, _ -> task.run(), 10L);
         } else {
             Bukkit.getScheduler().runTaskLater(plugin, task, 10L);
         }

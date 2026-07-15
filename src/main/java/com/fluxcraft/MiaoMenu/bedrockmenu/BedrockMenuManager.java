@@ -55,7 +55,7 @@ public class BedrockMenuManager {
             plugin.getLogger().severe(Lang.get("log.bedrock-menu.directory-create-failed"));
             return;
         }
-        File[] files = dir.listFiles((d, n) -> n.endsWith(".yml"));
+        File[] files = dir.listFiles((_, n) -> n.endsWith(".yml"));
         if (files == null) {
             return;
         }
@@ -134,7 +134,7 @@ public class BedrockMenuManager {
             return;
         }
         BedrockMenu.BedrockMenuItem item = allItems.get(clickedIndex);
-        if (item.isLocked(player, requirementService, menu.getName(), Collections.emptyMap())) {
+        if (item.isLocked(player, requirementService, menu.getName(), menu.getRequirementBlocks())) {
             player.sendMessage(Lang.get("message.item-locked"));
             return;
         }

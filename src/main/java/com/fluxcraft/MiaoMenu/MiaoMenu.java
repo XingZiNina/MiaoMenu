@@ -1,5 +1,6 @@
 package com.fluxcraft.MiaoMenu;
 
+import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Stream;
@@ -47,8 +48,10 @@ public final class MiaoMenu extends JavaPlugin {
     private ProxyManager proxyManager;
     private RequirementService requirementService;
     private RateLimiter interactionRateLimiter;
-    private Class<?> floodgateApiClass;
-    private Object floodgateApiInstance;
+    private volatile Class<?> floodgateApiClass;
+    private volatile Object floodgateApiInstance;
+    private volatile Method floodgateIsPlayerMethod;
+    private volatile boolean floodgateAvailable;
 
     @Override
     public void onEnable() {
@@ -90,6 +93,7 @@ public final class MiaoMenu extends JavaPlugin {
         saveDefaultConfig();
         Lang.init(this);
         HandySchedulerUtil.init(this);
+        floodgateAvailable = Bukkit.getPluginManager().getPlugin("floodgate") != null;
         configManager = new ConfigManager(this);
         configManager.loadConfig();
         configManager.checkAndRefreshMenus();
@@ -162,7 +166,7 @@ public final class MiaoMenu extends JavaPlugin {
     }
 
     private boolean isBedrockPlayer(Player player) {
-        if (Bukkit.getPluginManager().getPlugin("floodgate") == null) {
+        if (!floodgateAvailable) {
             return false;
         }
         try {
@@ -172,8 +176,10 @@ public final class MiaoMenu extends JavaPlugin {
             if (floodgateApiInstance == null) {
                 floodgateApiInstance = floodgateApiClass.getMethod("getInstance").invoke(null);
             }
-            return (Boolean) floodgateApiClass.getMethod("isFloodgatePlayer", UUID.class)
-                    .invoke(floodgateApiInstance, player.getUniqueId());
+            if (floodgateIsPlayerMethod == null) {
+                floodgateIsPlayerMethod = floodgateApiClass.getMethod("isFloodgatePlayer", UUID.class);
+            }
+            return (Boolean) floodgateIsPlayerMethod.invoke(floodgateApiInstance, player.getUniqueId());
         } catch (ReflectiveOperationException e) {
             getLogger().log(Level.WARNING, Lang.get("log.floodgate.player-check-failed").replace("{0}", player.getName()), e);
             return false;

@@ -30,6 +30,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class JavaMenu {
+    private static final LegacyComponentSerializer LEGACY_SECTION = LegacyComponentSerializer.legacySection();
     private final String name;
     private final String title;
     private final int size;
@@ -117,7 +118,7 @@ public class JavaMenu {
         if (parsedTitleString.length() > Constants.Config.TITLE_MAX_LENGTH) {
             parsedTitleString = parsedTitleString.substring(0, Constants.Config.TITLE_MAX_LENGTH);
         }
-        Component titleComponent = LegacyComponentSerializer.legacySection().deserialize(parsedTitleString);
+        Component titleComponent = LEGACY_SECTION.deserialize(parsedTitleString);
         MenuHolder holder = new MenuHolder(this);
         Inventory inventory = Bukkit.createInventory(holder, size, titleComponent);
         holder.setInventory(inventory);
@@ -258,15 +259,15 @@ public class JavaMenu {
             ItemStack item = new ItemStack(LOCKED_MATERIAL);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                String lockedName = "&7" + PlaceholderUtils.parse(player, name, plugin) + " &8[未解锁]";
-                meta.displayName(LegacyComponentSerializer.legacySection().deserialize(lockedName));
+                String lockedName = "&7" + PlaceholderUtils.parse(player, name, plugin) + Lang.get("message.item-locked-suffix");
+                meta.displayName(LEGACY_SECTION.deserialize(lockedName));
                 List<Component> loreComponents = new ArrayList<>();
                 lore.forEach(line -> loreComponents.add(
-                        LegacyComponentSerializer.legacySection().deserialize("&8" + PlaceholderUtils.parse(player, line, plugin))
+                        LEGACY_SECTION.deserialize("&8" + PlaceholderUtils.parse(player, line, plugin))
                 ));
                 loreComponents.add(Component.empty());
                 String lockLore = resolvedLockMessage != null ? resolvedLockMessage : Lang.get("message.item-locked");
-                loreComponents.add(LegacyComponentSerializer.legacySection().deserialize("&c" + lockLore));
+                loreComponents.add(LEGACY_SECTION.deserialize("&c" + lockLore));
                 meta.lore(loreComponents);
                 item.setItemMeta(meta);
             }
@@ -275,16 +276,19 @@ public class JavaMenu {
 
         @SuppressWarnings("deprecation")
         private ItemStack createUnlockedItemStack(Player player, MiaoMenu plugin, @Nullable ItemResolver itemResolver) {
-            Material resolvedMaterial = Material.matchMaterial(material);
-            ItemStack item = itemResolver != null
-                    ? itemResolver.resolve(material, customModelData)
-                    : new ItemStack(resolvedMaterial != null ? resolvedMaterial : Material.STONE);
+            ItemStack item;
+            if (itemResolver != null) {
+                item = itemResolver.resolve(material, customModelData);
+            } else {
+                Material resolvedMaterial = Material.matchMaterial(material);
+                item = new ItemStack(resolvedMaterial != null ? resolvedMaterial : Material.STONE);
+            }
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                meta.displayName(LegacyComponentSerializer.legacySection().deserialize(PlaceholderUtils.parse(player, name, plugin)));
+                meta.displayName(LEGACY_SECTION.deserialize(PlaceholderUtils.parse(player, name, plugin)));
                 List<Component> loreComponents = new ArrayList<>();
                 lore.forEach(line -> loreComponents.add(
-                        LegacyComponentSerializer.legacySection().deserialize(PlaceholderUtils.parse(player, line, plugin))
+                        LEGACY_SECTION.deserialize(PlaceholderUtils.parse(player, line, plugin))
                 ));
                 meta.lore(loreComponents);
                 if (customModelData > 0) {

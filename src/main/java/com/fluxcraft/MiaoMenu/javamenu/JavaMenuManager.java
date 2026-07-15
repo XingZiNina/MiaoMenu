@@ -48,7 +48,7 @@ public class JavaMenuManager {
             plugin.getLogger().warning(Lang.get("log.java-menu.directory-create-failed"));
             return;
         }
-        File[] files = dir.listFiles((d, n) -> n.endsWith(".yml"));
+        File[] files = dir.listFiles((_, n) -> n.endsWith(".yml"));
         if (files == null) {
             return;
         }

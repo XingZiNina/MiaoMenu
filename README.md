@@ -2,7 +2,15 @@
 
 > 轻量级 Java 版和基岩版跨平台菜单插件，支持 Paper 26.2 / Folia / Java 25
 
-[![Java CI](https://github.com/Yamada0001/MiaoMenu/actions/workflows/ci.yml/badge.svg?branch=26.2)](https://github.com/Yamada0001/MiaoMenu/actions/workflows/ci.yml)
+<p align="center">
+  <img alt="Maven" src="https://img.shields.io/badge/Maven-C71A36?style=plastic&logo=apachemaven&logoColor=white">
+  <img alt="Java CI" src="https://github.com/Yamada0001/MiaoMenu/actions/workflows/ci.yml/badge.svg?branch=26.2&logo=apachemaven&logoColor=white">
+  <img alt="Java 21" src="https://img.shields.io/badge/Java-21-FF5CAD?style=plastic&logo=openjdk&logoColor=111111&labelColor=FFFFFF">
+  <img alt="Bukkit 26.2" src="https://img.shields.io/badge/Bukkit-26.2-FF8A00?style=plastic&logo=minecraft&logoColor=111111&labelColor=FFD43B">
+  <img alt="Paper 26.2" src="https://img.shields.io/badge/Paper-26.2-00A3FF?style=plastic&logo=minecraft&logoColor=white&labelColor=A855F7">
+  <img alt="Folia 26.2" src="https://img.shields.io/badge/Folia-26.2-FF8A00?style=plastic&logo=minecraft&logoColor=white&labelColor=22C55E">
+  <a href="https://github.com/Yamada0001/VillagerRevolution/releases"><img alt="GitHub Releases downloads" src="https://img.shields.io/github/downloads/Yamada0001/VillagerRevolution/total?style=plastic&logo=github&logoColor=white&label=GitHub%20Releases&labelColor=6366F1&color=38BDF8"></a>
+</p>
 
 ## 目录
 
